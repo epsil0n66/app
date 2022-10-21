@@ -17,7 +17,7 @@
     <v-card-text
       class="text-h3 pt-12 pb-12 text-center"
     >
-      Enter the Email to which your account was registered
+      New password
     </v-card-text>
     <v-card
       elevation="0"
@@ -26,12 +26,24 @@
       max-width="18vw"
     >
       <v-text-field
-        v-model="recoveryEmailInput"
+        v-model="newPasswordInput"
         style="border-radius:16px"
         height="68px"
         solo
-        label="Email"
-        placeholder="Email"
+        label="Password"
+        placeholder="Password"
+        password
+        type="password"
+      />
+      <v-text-field
+        v-model="repeatPasswordInput"
+        style="border-radius:16px"
+        height="68px"
+        solo
+        label="Password"
+        placeholder="Password"
+        password
+        type="password"
       />
       <v-btn
         color="accent"
@@ -39,8 +51,9 @@
         height="56px"
         style="border-radius:16px"
         class="mt-8"
+        @click="createNewPassword"
       >
-        Send
+        Create new password
       </v-btn>
     </v-card>
   </v-card>
@@ -48,11 +61,12 @@
 <script>
 import config from '@/config'
 export default {
-  name: 'PasswordRecovery',
+  name: 'NewPassword',
 
   data () {
     return {
-      recoveryEmailInput: null
+      newPasswordInput: null,
+      repeatPasswordInput: null
     }
   },
 
@@ -61,11 +75,12 @@ export default {
   },
 
   methods: {
-    passwordRecovery () {
+    createNewPassword () {
       const data = {
-        email: this.recoveryEmailInput
+        new_password: this.newPasswordInput,
+        new_password_repeat: this.repeatPasswordInput
       }
-      this.$axios.post(`${config.apiUrl}/user/password_recovery`, data)
+      this.$axios.put(`${config.apiUrl}/user/change_password`, data)
     }
   }
 }

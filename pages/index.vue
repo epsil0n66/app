@@ -54,30 +54,38 @@
             color="primary"
             max-width="18vw"
           >
-            <v-text-field
-              v-model="loginEmailInput"
-              style="border-radius:16px"
-              height="68px"
-              solo
-              label="Email"
-              placeholder="Email"
-            />
-            <v-text-field
-              v-model="loginPasswordInput"
-              style="border-radius:16px"
-              height="68px"
-              solo
-              label="Password"
-              placeholder="Password"
-              password
-              type="password"
-            />
+            <v-form
+              ref="loginForm"
+              model="loginFormValidation"
+            >
+              <v-text-field
+                v-model="loginEmailInput"
+                :rules="emailRules"
+                style="border-radius:16px"
+                height="68px"
+                solo
+                label="Email"
+                placeholder="Email"
+              />
+              <v-text-field
+                v-model="loginPasswordInput"
+                :rules="passwordRules"
+                style="border-radius:16px"
+                height="68px"
+                solo
+                label="Password"
+                placeholder="Password"
+                password
+                type="password"
+              />
+            </v-form>
             <v-btn
               color="accent"
               width="100%"
               height="56px"
               style="border-radius:16px"
               class="mt-8"
+              @click="login"
             >
               Log in
             </v-btn>
@@ -133,20 +141,27 @@
             color="primary"
             max-width="18vw"
           >
-            <v-text-field
-              v-model="loginEmailInput"
-              style="border-radius:16px"
-              height="68px"
-              solo
-              label="Email"
-              placeholder="Email"
-            />
+            <v-form
+              ref="signupForm"
+              v-model="signupFormValidation"
+            >
+              <v-text-field
+                v-model="signupEmailInput"
+                :rules="emailRules"
+                style="border-radius:16px"
+                height="68px"
+                solo
+                label="Email"
+                placeholder="Email"
+              />
+            </v-form>
             <v-btn
               color="accent"
               width="100%"
               height="56px"
               style="border-radius:16px"
               class="mt-8"
+              @click="signup"
             >
               Create account
             </v-btn>
@@ -158,6 +173,7 @@
 </template>
 
 <script>
+import config from '@/config'
 export default {
   name: 'IndexPage',
   data () {
@@ -180,8 +196,61 @@ export default {
         { text: 'GGL' },
         { text: 'FB' },
         { text: 'APL' }
+      ],
+      loginEmailInput: null,
+      loginPasswordInput: null,
+      signupEmailInput: null,
+      loginFormValidation: false,
+      signupFormValidation: false,
+      emailRules: [
+        v => !!v || 'E-mail is required',
+        v => /^\S+@\S+\.\S+$/.test(v) || 'E-mail must be valid'
+      ],
+      passwordRules: [
+        v => !!v || 'Password is required',
+        v => /.{8,}/.test(v) || 'Password must be more than 8 characters',
+        v => /^(.{1,128})$/.test(v) || 'Password must be less than 128 characters',
+        v => /\d/.test(v) || 'Password must contain at least one digit',
+        v => /^\S*$/.test(v) || 'No spaces are allowed'
       ]
     }
+  },
+  methods: {
+    login () {
+      // const data = {
+      //   email: this.loginEmailInput,
+      //   password: this.loginPasswordInput
+      // }
+      if (this.$refs.loginForm.validate() === true) {
+        this.$store.dispatch('onLogin', {
+          email: this.loginEmailInput,
+          password: this.loginPasswordInput
+        })
+        console.log(this.$store.getters.getUserRole)
+        // this.$axios.post(`${config.apiUrl}/user/session`, data)
+        //   .then((response) => {
+        //     console.log(response.headers.authorization)
+        //   })
+      }
+    },
+    signup () {
+      const data = {
+        email: this.signupEmailInput
+      }
+      if (this.$refs.signupForm.validate() === true) {
+        this.$axios.post(`${config.apiUrl}/user/email`, data)
+      }
+    }
+  },
+  beforeCreate () {
+    if (this.$store.getters.getUserRole === 'registered') {
+      this.$router.push({
+        path: '/main'
+      })
+    }
+  },
+  mounted () {
+    console.log(this.$store.getters.getUserRole)
   }
 }
 </script>
