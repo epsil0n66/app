@@ -101,6 +101,9 @@
               </v-card-text>
             </NuxtLink>
           </v-card>
+          <h3>Your role: {{ demoUserRole }}</h3>
+          <h3>Your access token: {{ demoToken }}</h3>
+          <h3>Your refresh token: {{ demoRefreshToken }}</h3>
         </v-card>
       </v-tab-item>
       <v-tab-item
@@ -178,6 +181,9 @@ export default {
   name: 'IndexPage',
   data () {
     return {
+      demoToken: null,
+      demoRefreshToken: null,
+      demoUserRole: null,
       items: [
         {
           icon: 'mdi-apps',
@@ -215,6 +221,18 @@ export default {
       ]
     }
   },
+  beforeCreate () {
+    if (this.$store.getters.getUserRole === 'registered') {
+      this.$router.push({
+        path: '/main'
+      })
+    }
+  },
+  mounted () {
+    this.demoUserRole = this.$store.getters.getUserRole
+    this.demoToken = this.$store.getters.getToken
+    this.demoRefreshToken = this.$store.getters.getRefreshToken
+  },
   methods: {
     login () {
       // const data = {
@@ -241,16 +259,6 @@ export default {
         this.$axios.post(`${config.apiUrl}/user/email`, data)
       }
     }
-  },
-  beforeCreate () {
-    if (this.$store.getters.getUserRole === 'registered') {
-      this.$router.push({
-        path: '/main'
-      })
-    }
-  },
-  mounted () {
-    console.log(this.$store.getters.getUserRole)
   }
 }
 </script>

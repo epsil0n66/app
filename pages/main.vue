@@ -61,6 +61,9 @@
       <!-- Provides the application the proper gutter -->
       <v-container fluid>
         <h1>Arobots</h1>
+        <h3>Your role: {{ demoUserRole }}</h3>
+        <h3>Your access token: {{ demoToken }}</h3>
+        <h3>Your refresh token: {{ demoRefreshToken }}</h3>
         <v-data-table
           :headers="headers"
           :items="desserts"
@@ -78,6 +81,9 @@ export default {
   layout: 'main',
   data () {
     return {
+      demoToken: null,
+      demoRefreshToken: null,
+      demoUserRole: null,
       navLinks: [
         { name: 'Trading Robots' },
         { name: 'Referal' },
@@ -189,7 +195,9 @@ export default {
     }
   },
   mounted () {
-    console.log(this.$store.getters.getUserRole)
+    this.demoUserRole = this.$store.getters.getUserRole
+    this.demoToken = this.$store.getters.getToken
+    this.demoRefreshToken = this.$store.getters.getRefreshToken
   },
 
   methods: {

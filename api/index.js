@@ -17,4 +17,4 @@ const defaultConfig = {
   }
 }
 
-export const DefaultAPIIOnstance = axios.create(defaultConfig)
+export const DefaultAPIInstance = axios.create(defaultConfig)
