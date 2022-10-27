@@ -4,25 +4,25 @@
 
 <script>
 export default {
-  name: 'ArobotsFrontendAuth',
+  name: 'ArobotsFrontendRecoveryConfirm',
   layout: 'main',
   data () {
     return {
       email: null,
-      registration_token: null
+      recoveryToken: null
     }
   },
 
   async mounted () {
     const url = document.URL
     this.email = decodeURI(url.slice(url.indexOf('=') + 1, url.indexOf('&')).replace('%40', '@'))
-    this.registration_token = url.slice(url.indexOf('=') + 1).slice(url.slice(url.indexOf('=') + 1).indexOf('=') + 1)
+    this.recoveryToken = url.slice(url.indexOf('=') + 1).slice(url.slice(url.indexOf('=') + 1).indexOf('=') + 1)
     console.log(this.email)
-    console.log(this.registration_token)
+    console.log(this.recoveryToken)
     try {
-      await this.$store.dispatch('onRegister', {
+      await this.$store.dispatch('onPasswordChange', {
         email: this.email,
-        registrationToken: this.registration_token
+        recoveryToken: this.recoveryToken
       })
     } catch (e) {
       console.log(e)
@@ -35,6 +35,6 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+  <style lang="scss" scoped>
 
-</style>
+  </style>

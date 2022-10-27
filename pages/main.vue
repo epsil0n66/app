@@ -60,7 +60,9 @@
     <v-main>
       <!-- Provides the application the proper gutter -->
       <v-container fluid>
-        <h1>Arobots</h1>
+        <h1 @click="$router.push('/')">
+          Arobots
+        </h1>
         <h3>Your role: {{ demoUserRole }}</h3>
         <h3>Your access token: {{ demoToken }}</h3>
         <h3>Your refresh token: {{ demoRefreshToken }}</h3>
@@ -239,7 +241,7 @@ td:last-child {
     border-top-right-radius: 12px;
 }
 th {
-    background-color: #eee;
+    background-color: rgb(255, 255, 255);
 }
 th:first-child {
     border-top-left-radius: 12px;

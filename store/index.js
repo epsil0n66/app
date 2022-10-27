@@ -1,5 +1,4 @@
 import { AuthAPI } from '@/api/Auth'
-
 export const state = () => ({
   token: localStorage.getItem('token') || null,
   refreshToken: localStorage.getItem('refreshToken') || null,
@@ -46,28 +45,31 @@ export const mutations = {
 }
 
 export const actions = {
-  onLogin ({ commit }, { email, password }) {
-    AuthAPI.login(email, password).then((res) => {
-      console.log(res)
+  async onLogin ({ commit }, { email, password }) {
+    await AuthAPI.login(email, password).then((res) => {
       commit('setToken', res.headers.authorization)
       if (res.headers.refresh) {
         commit('setRefreshToken', res.headers.refresh)
       }
       commit('setUserRole', 'registered')
-      localStorage.setItem('userRole', 'registered')
-      if (localStorage.getItem('userRole') === 'registered') {
-        this.$router.push({
-          path: '/main'
-        })
-      } else {
-        this.$router.push({
-          path: '/'
-        })
-      }
+      this.$axios.defaults.headers.Authorization = `Bearer ${res.headers.authorization}`
+      this.$router.push({
+        path: '/main'
+      })
     })
   },
-  onRegister ({ commit }, { email, registrationToken }) {
-    AuthAPI.confirm(email, registrationToken).then((res) => {
+  async onRegister ({ commit }, { email, registrationToken }) {
+    await AuthAPI.confirm(email, registrationToken).then((res) => {
+      console.log(res)
+      commit('setToken', res.headers.authorization)
+      commit('setRefreshToken', res.headers.refresh)
+      commit('setUserRole', 'registered')
+      localStorage.setItem('userRole', 'registered')
+      this.$router.push({ path: '/main' })
+    })
+  },
+  async onPasswordChange ({ commit }, { email, recoveryToken }) {
+    await AuthAPI.recovery(email, recoveryToken).then((res) => {
       console.log(res)
       commit('setToken', res.headers.authorization)
       commit('setRefreshToken', res.headers.refresh)
@@ -81,5 +83,6 @@ export const actions = {
     commit('setToken', null)
     commit('setRefreshToken', null)
     commit('setUserRole', 'guest')
+    delete this.$axios.defaults.headers.Authorization
   }
 }

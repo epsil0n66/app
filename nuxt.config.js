@@ -38,9 +38,14 @@ export default {
     // https://go.nuxtjs.dev/eslint
     '@nuxtjs/eslint-module',
     // https://go.nuxtjs.dev/vuetify
-    '@nuxtjs/vuetify'
+    '@nuxtjs/vuetify',
+    '@nuxtjs/google-fonts'
   ],
-
+  googleFonts: {
+    families: {
+      Poppins: [300, 500, 700]
+    }
+  },
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [
     // https://go.nuxtjs.dev/axios
@@ -57,10 +62,16 @@ export default {
   vuetify: {
     customVariables: ['~/assets/variables.scss'],
     theme: {
+      treeShake: true,
+      defaultAssets: {
+        font: {
+          family: 'Poppins'
+        }
+      },
       light: true,
       themes: {
         light: {
-          primary: colors.grey.lighten2,
+          primary: colors.grey.lighten3,
           accent: colors.grey.darken3,
           secondary: colors.grey.darken1,
           info: colors.teal.lighten1,

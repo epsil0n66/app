@@ -13,6 +13,11 @@ export const AuthAPI = {
     const data = { email, registration_token }
     return LoginAPIInstance.post(url, data)
   },
+  recovery (email, recovery_token) {
+    const url = '/user/password_recovery/confirmation'
+    const data = { email, recovery_token }
+    return LoginAPIInstance.post(url, data)
+  },
   logout () {
     const url = '/logout'
     return DefaultAPIInstance.post(url)

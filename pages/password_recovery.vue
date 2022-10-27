@@ -39,6 +39,7 @@
         height="56px"
         style="border-radius:16px"
         class="mt-8"
+        @click="passwordRecovery"
       >
         Send
       </v-btn>
