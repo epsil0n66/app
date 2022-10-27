@@ -1,16 +1,14 @@
 <template>
   <v-card
-    color="primary"
-    elevation="10"
+    elevation="3"
     width="400px"
-    style="margin-left: 100px; margin-bottom: 66px; margin-top: 66px;"
+    style="margin-left: 7.3vw; margin-bottom: 8.5vh; margin-top: 8.5vh; z-index: 1"
   >
     <div
-      style="padding-top:40px"
       v-if="visibleRecoveryPage == false"
+      style="padding-top:40px"
     >
       <v-card
-        color="primary"
         elevation="0"
         class="mx-auto"
         max-width="320px"
@@ -33,12 +31,10 @@
         >
           <v-card
             class="mx-auto"
-            color="primary"
           >
             <v-card
               elevation="0"
               class="mx-auto"
-              color="primary"
               max-width="320px"
             >
               <v-card-text
@@ -129,9 +125,6 @@
                 </v-btn>
               </v-row>
             </v-card>
-            <h3>Your role: {{ demoUserRole }}</h3>
-            <h3>Your access token: {{ demoToken }}</h3>
-            <h3>Your refresh token: {{ demoRefreshToken }}</h3>
           </v-card>
         </v-tab-item>
         <v-tab-item
@@ -139,12 +132,10 @@
         >
           <v-card
             class="mx-auto"
-            color="primary"
           >
             <v-card
               elevation="0"
               class="mx-auto"
-              color="primary"
               max-width="320px"
             >
               <v-card-text
@@ -210,18 +201,16 @@
     >
       <v-card
         class="mx-auto"
-        color="primary"
       >
         <v-card
           elevation="0"
           class="mx-auto"
-          color="primary"
           max-width="320px"
         >
           <v-card-text
             style="cursor: pointer;"
-            @click="visibleRecoveryPage = false"
             class="text-body-1 px-0 pt-8 green--text"
+            @click="visibleRecoveryPage = false"
           >
             <v-icon
               style="cursor: pointer;"

@@ -2,8 +2,8 @@
   <v-app light>
     <v-main>
       <Nuxt />
-      <div class="ellipse1" style="pointer-events: none"/>
-      <div class="ellipse2" style="pointer-events: none"/>
+      <div class="ellipse1" style="pointer-events: none" />
+      <div class="ellipse2" style="pointer-events: none" />
     </v-main>
     <v-footer
       color="#1F1F1F"
