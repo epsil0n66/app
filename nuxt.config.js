@@ -43,7 +43,7 @@ export default {
   ],
   googleFonts: {
     families: {
-      Poppins: [300, 500, 700]
+      Poppins: [300, 400, 500, 600, 700, 800]
     }
   },
   // Modules: https://go.nuxtjs.dev/config-modules
@@ -71,7 +71,7 @@ export default {
       light: true,
       themes: {
         light: {
-          primary: colors.grey.lighten3,
+          primary: '#1AC200',
           accent: colors.grey.darken3,
           secondary: colors.grey.darken1,
           info: colors.teal.lighten1,

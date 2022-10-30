@@ -1,5 +1,81 @@
 <template>
   <v-app light>
+    <v-app-bar
+      app
+      color="white"
+      elevation="1"
+    >
+      <v-col cols="1" />
+      <img
+        src="@/static/arobots.png"
+        height="36px"
+        style="cursor: pointer"
+        @click="$router.push('/main')"
+      >
+      <v-col cols="1" />
+      <v-col
+        cols="6"
+        justify="center"
+      >
+        <button
+          v-for="(item, index) in navLinks"
+          :key="index"
+          color="black"
+          class="mx-10"
+          style="line-height:64px;"
+          :style="[index == 0 ? {'border-bottom': 'solid green'} : {'border-bottom': 'none'}]"
+          @click="$router.push(item.to)"
+        >
+          {{ item.name }}
+        </button>
+      </v-col>
+      <v-spacer />
+      <v-col
+        justify="end"
+      >
+        <v-row
+          justify="center"
+          align="center"
+        >
+          <img
+            v-show="role === 'registered'"
+            height="45px"
+            width="45px"
+            class="rounded-lg mr-6"
+          >
+          <v-menu>
+            <template #activator="{ on, attrs }">
+              <span
+                v-bind="attrs"
+                style="cursor:pointer;"
+                v-on="on"
+              >
+                {{ role }}
+              </span>
+            </template>
+            <v-list>
+              <v-list-item>
+                <v-list-item-title
+                  v-show="role === 'registered'"
+                  style="cursor:pointer;"
+                  @click="signOut"
+                >
+                  Sign out
+                </v-list-item-title>
+                <v-list-item-title
+                  v-show="role === 'guest'"
+                  style="cursor:pointer;"
+                  @click="$router.push('/')"
+                >
+                  Sign in
+                </v-list-item-title>
+              </v-list-item>
+            </v-list>
+          </v-menu>
+        </v-row>
+      </v-col>
+      <v-col cols="1" />
+    </v-app-bar>
     <v-main>
       <Nuxt />
       <div class="ellipse1" style="pointer-events: none" />
@@ -118,7 +194,15 @@ export default {
 
   data () {
     return {
-      refresher: null
+      refresher: null,
+      navLinks: [
+        { name: 'Trading Robots', to: '/main' },
+        { name: 'Referal', to: '/referal' },
+        { name: 'About', to: '/about' },
+        { name: 'API', to: '/api' }
+      ],
+      role: null,
+      currentURL: null
     }
   },
   beforeCreate () {
@@ -126,7 +210,11 @@ export default {
       this.$axios.defaults.headers.Authorization = this.$store.getters.getToken
     }
   },
+  beforeMount () {
+    this.currentURL = document.URL
+  },
   mounted () {
+    this.role = this.$store.getters.getUserRole
     this.refreshToken()
     if (this.$store.getters.getUserRole === 'registered') {
       this.refreshToken()
@@ -141,6 +229,13 @@ export default {
     clearInterval(this.refresher)
   },
   methods: {
+    signOut () {
+      this.$store.dispatch('onSignOut')
+      console.log(this.$store.getters.getUserRole)
+      this.$router.push({
+        path: '/'
+      })
+    },
     refreshToken () {
       this.$axios.post(`${config.apiUrl}/user/session/refresh`, { refresh_token: this.$store.getters.getRefreshToken })
         .then((response) => {
@@ -155,7 +250,7 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 * {
   font-family: 'Poppins', sans-serif;
 }

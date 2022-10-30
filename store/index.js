@@ -14,6 +14,12 @@ export const getters = {
   },
   getRefreshToken (state) {
     return state.refreshToken
+  },
+  getAlertText (state) {
+    return state.alertText
+  },
+  getAlertType (state) {
+    return state.alertType
   }
 }
 
@@ -30,6 +36,10 @@ export const mutations = {
     state.userRole = userRole
     localStorage.setItem('userRole', userRole)
   },
+  setAlert (state, alertText, alertType) {
+    state.alertText = alertText
+    state.alertType = alertType
+  },
   deleteToken (state) {
     state.token = null
     localStorage.removeItem('token')
@@ -45,7 +55,7 @@ export const mutations = {
 }
 
 export const actions = {
-  async onLogin ({ commit }, { email, password }) {
+  async onSignIn ({ commit }, { email, password }) {
     await AuthAPI.login(email, password).then((res) => {
       commit('setToken', res.headers.authorization)
       if (res.headers.refresh) {
@@ -58,27 +68,31 @@ export const actions = {
       })
     })
   },
-  async onRegister ({ commit }, { email, registrationToken }) {
+  async onSignUp ({ commit }, { email, registrationToken }) {
     await AuthAPI.confirm(email, registrationToken).then((res) => {
-      console.log(res)
       commit('setToken', res.headers.authorization)
       commit('setRefreshToken', res.headers.refresh)
       commit('setUserRole', 'registered')
       localStorage.setItem('userRole', 'registered')
       this.$router.push({ path: '/main' })
     })
+      .catch((e) => {
+        commit('setAlert', e.response.data.errors.title, 'error')
+      })
   },
   async onPasswordChange ({ commit }, { email, recoveryToken }) {
     await AuthAPI.recovery(email, recoveryToken).then((res) => {
-      console.log(res)
       commit('setToken', res.headers.authorization)
       commit('setRefreshToken', res.headers.refresh)
       commit('setUserRole', 'registered')
       localStorage.setItem('userRole', 'registered')
       this.$router.push({ path: '/main' })
     })
+      .catch((e) => {
+        commit('setAlert', e.response.data.errors.title, 'error')
+      })
   },
-  onLogout ({ commit }) {
+  onSignOut ({ commit }) {
     localStorage.setItem('userRole', 'guest')
     commit('setToken', null)
     commit('setRefreshToken', null)

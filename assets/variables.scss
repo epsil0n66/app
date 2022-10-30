@@ -2,8 +2,21 @@
 //
 // The variables you want to modify
 // $font-size-root: 20px;
+$rounded: (
+    'sm': 9px,
+    null: 12px,
+);
 $body-font-family: Poppins;
 $heading-font-family: Poppins;
+$title-font: Poppins;
+$font-family:'Poppins';
+.v-application {
+    [class*='text-'] {
+      color: #36405a;
+      font-family: $font-family, sans-serif !important;
+    }
+    font-family: $font-family, sans-serif !important;
+  }
 $font-size-root: 18px;
 $data-table-regular-row-height: 96px;
 $data-table-dense-header-height: 96px;

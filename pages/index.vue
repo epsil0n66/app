@@ -19,8 +19,16 @@
           fixed-tabs
           centered
         >
-          <v-tab>Sign in</v-tab>
-          <v-tab>Sign up</v-tab>
+          <v-tab
+            class="text-none"
+          >
+            Sign in
+          </v-tab>
+          <v-tab
+            class="text-none"
+          >
+            Sign up
+          </v-tab>
         </v-tabs>
       </v-card>
       <v-tabs-items
@@ -38,7 +46,7 @@
               max-width="320px"
             >
               <v-card-text
-                class="text-h5 px-0 pt-8 font-weight-bold black--text"
+                class="text-h5 px-0 pt-8  black--text"
               >
                 Log in to your account
               </v-card-text>
@@ -49,8 +57,9 @@
                 <v-text-field
                   v-model="loginEmailInput"
                   :rules="emailRules"
-                  style="border-radius:16px"
-                  solo
+                  style="border-radius:12px"
+                  outlined
+                  single-line
                   dense
                   label="Email"
                   placeholder="Email"
@@ -58,8 +67,9 @@
                 <v-text-field
                   v-model="loginPasswordInput"
                   :rules="passwordRules"
-                  style="border-radius:16px"
-                  solo
+                  style="border-radius:12px"
+                  outlined
+                  single-line
                   dense
                   label="Password"
                   placeholder="Password"
@@ -77,14 +87,14 @@
                     cols="6"
                   >
                     <v-btn
-                      color="green"
+                      color="primary"
                       width="170px"
                       height="48px"
-                      style="border-radius:16px"
+                      style="border-radius:12px"
                       @click="login"
                     >
                       <p
-                        class="text-center pa-0 ma-0 text-body-2 white--text"
+                        class="text-center pa-0 ma-0 text-body-2 white--text text-none"
                       >
                         Sign in
                       </p>
@@ -103,6 +113,29 @@
                     </p>
                   </v-col>
                 </v-row>
+                <v-alert
+                  class="mt-6"
+                  rounded-lg
+                  :value="alert"
+                  :type="alertType"
+                >
+                  {{ alertText }}
+                  <v-btn
+                    fab
+                    height="24px"
+                    width="24px"
+                    color="white"
+                    x-small
+                    style="float: right;"
+                    @click="alert = !alert"
+                  >
+                    <v-icon
+                      color="red"
+                    >
+                      mdi-close
+                    </v-icon>
+                  </v-btn>
+                </v-alert>
               </v-container>
               <v-card-text
                 class="text-h6 pt-6 text-center text-body-2"
@@ -139,7 +172,7 @@
               max-width="320px"
             >
               <v-card-text
-                class="text-h5 px-0 pt-8 font-weight-bold black--text"
+                class="text-h5 px-0 pt-8  black--text"
               >
                 Welcome to ARobots
               </v-card-text>
@@ -150,27 +183,51 @@
                 <v-text-field
                   v-model="signupEmailInput"
                   :rules="emailRules"
-                  style="border-radius:16px"
+                  style="border-radius:12px"
                   dense
-                  solo
+                  outlined
+                  single-line
                   label="Email"
                   placeholder="Email"
                 />
               </v-form>
               <v-btn
-                color="green"
+                color="primary"
                 width="100%"
                 height="48px"
-                style="border-radius:16px"
+                style="border-radius:12px"
                 class="mt-8"
                 @click="signup"
               >
                 <p
-                  class="text-center pa-0 ma-0 text-body-2 white--text"
+                  class="text-center pa-0 ma-0 text-body-2 white--text text-none"
                 >
                   Create account
                 </p>
               </v-btn>
+              <v-alert
+                class="mt-6"
+                rounded-lg
+                :value="alertSignUp"
+                :type="alertType"
+              >
+                {{ alertSignUpText }}
+                <v-btn
+                  fab
+                  height="24px"
+                  width="24px"
+                  color="white"
+                  x-small
+                  style="float: right;"
+                  @click="alertSignUp = !alertSignUp"
+                >
+                  <v-icon
+                    color="red"
+                  >
+                    mdi-close
+                  </v-icon>
+                </v-btn>
+              </v-alert>
               <v-card-text
                 class="text-h6 pt-6 text-center text-body-2"
               >
@@ -204,7 +261,7 @@
       >
         <v-card
           elevation="0"
-          class="mx-auto"
+          class="mx-auto pb-4"
           max-width="320px"
         >
           <v-card-text
@@ -214,16 +271,16 @@
           >
             <v-icon
               style="cursor: pointer;"
-              color="green"
+              color="primary"
               class="mb-1"
-              @click="visibleRecoveryPage = false"
+              @click="visibleRecoveryPage = false; alertRecovery = false"
             >
               mdi-chevron-left
             </v-icon>
             Back
           </v-card-text>
           <v-card-text
-            class="text-h5 px-0 pt-8 font-weight-bold black--text"
+            class="text-h5 px-0 pt-8  black--text"
           >
             Enter the Email to which your account was registered
           </v-card-text>
@@ -234,27 +291,51 @@
             <v-text-field
               v-model="recoveryEmailInput"
               :rules="emailRules"
-              style="border-radius:16px"
+              style="border-radius:12px"
               dense
-              solo
+              outlined
+              single-line
               label="Email"
               placeholder="Email"
             />
           </v-form>
           <v-btn
-            color="green"
+            color="primary"
             width="100%"
             height="48px"
-            style="border-radius:16px"
-            class="mt-4 mb-10"
+            style="border-radius:12px"
+            class="mt-4 mb-6"
             @click="passwordRecovery"
           >
             <p
-              class="text-center pa-0 ma-0 text-body-2 white--text"
+              class="text-center pa-0 ma-0 text-body-2 white--text text-none "
             >
               Send
             </p>
           </v-btn>
+          <v-alert
+            class="mb-5"
+            rounded-lg
+            :value="alertRecovery"
+            :type="alertType"
+          >
+            {{ alertRecoveryText }}
+            <v-btn
+              fab
+              height="24px"
+              width="24px"
+              color="white"
+              x-small
+              style="float: right;"
+              @click="alertRecovery = !alertRecovery"
+            >
+              <v-icon
+                color="red"
+              >
+                mdi-close
+              </v-icon>
+            </v-btn>
+          </v-alert>
         </v-card>
       </v-card>
     </div>
@@ -297,6 +378,13 @@ export default {
       loginFormValidation: false,
       signupFormValidation: false,
       visibleRecoveryPage: false,
+      alert: false,
+      alertSignUp: false,
+      alertRecovery: false,
+      alertText: null,
+      alertSignUpText: null,
+      alertRecoveryText: null,
+      alertType: null,
       emailRules: [
         v => !!v || 'E-mail is required',
         v => /^\S+@\S+\.\S+$/.test(v) || 'E-mail must be valid'
@@ -324,23 +412,17 @@ export default {
   },
   methods: {
     async login () {
-      // const data = {
-      //   email: this.loginEmailInput,
-      //   password: this.loginPasswordInput
-      // }
       if (this.$refs.loginForm.validate() === true) {
         try {
-          await this.$store.dispatch('onLogin', {
+          await this.$store.dispatch('onSignIn', {
             email: this.loginEmailInput,
             password: this.loginPasswordInput
           })
         } catch (e) {
-          console.log(e)
+          this.alert = true
+          this.alertText = e.response.data.errors.title
+          this.alertType = 'error'
         }
-        // this.$axios.post(`${config.apiUrl}/user/session`, data)
-        //   .then((response) => {
-        //     console.log(response.headers.authorization)
-        //   })
       }
     },
     signup () {
@@ -349,6 +431,11 @@ export default {
       }
       if (this.$refs.signupForm.validate() === true) {
         this.$axios.post(`${config.apiUrl}/user/email`, data)
+          .catch((e) => {
+            this.alertSignUp = true
+            this.alertSignUpText = e.response.data.errors.title
+            this.alertType = 'error'
+          })
       }
     },
     passwordRecovery () {
@@ -356,18 +443,38 @@ export default {
         email: this.recoveryEmailInput
       }
       this.$axios.post(`${config.apiUrl}/user/password_recovery`, data)
+        .catch((e) => {
+          console.log(this.alertRecovery)
+          this.alertRecovery = true
+          this.alertRecoveryText = e.response.data.errors.title
+          this.alertType = 'error'
+        })
     }
   }
 }
 </script>
 <style>
+.v-sheet.v-card {
+  border-radius: 12px;
+}
+.btn {
+    text-transform: unset !important;
+}
+.v-application .text-h5 {
+  font-weight: 600;
+}
 .v-slide-group__content {
+  padding-left: 4px;
+  padding-right: 4px;
   border-radius: 9px;
-  border: solid 1px green
+  border: solid 1px #1AC200
+}
+.v-tab.v-tab {
+  color: white;
 }
 .v-tab--active {
   margin: 3px;
   border-radius: 9px;
-  background-color: green;
+  background-color: #1AC200;
 }
 </style>

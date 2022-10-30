@@ -1,69 +1,12 @@
 <template>
   <v-app>
-    <v-app-bar app>
-      <v-col cols="1" />
-      <img src="@/static/arobots.png" height="36px">
-      <v-col cols="1" />
-      <v-col
-        cols="6"
-        justify="center"
-      >
-        <v-btn
-          v-for="(item, index) in navLinks"
-          :key="index"
-          text
-          color="black"
-          class="mx-10"
-        >
-          {{ item.name }}
-        </v-btn>
-      </v-col>
-      <v-spacer />
-      <v-col
-        justify="end"
-      >
-        <v-row
-          justify="center"
-          align="center"
-        >
-          <img
-            src="@/static/arobots.png"
-            height="45px"
-            width="45px"
-            class="rounded-lg mr-6"
-          >
-          <v-menu>
-            <template #activator="{ on, attrs }">
-              <span
-                v-bind="attrs"
-                style="cursor:pointer;"
-                v-on="on"
-              >
-                UserName
-              </span>
-            </template>
-            <v-list>
-              <v-list-item>
-                <v-list-item-title
-                  style="cursor:pointer;"
-                  @click="logout"
-                >
-                  Log out
-                </v-list-item-title>
-              </v-list-item>
-            </v-list>
-          </v-menu>
-        </v-row>
-      </v-col>
-      <v-col cols="1" />
-    </v-app-bar>
     <v-main>
       <!-- Provides the application the proper gutter -->
       <v-card
         flat
         style="margin-left: 7.3vw; margin-right: 7.3vw;"
       >
-        <h1 @click="$router.push('/')">
+        <h1>
           Arobots
         </h1>
         <v-card
@@ -129,7 +72,6 @@
               class="ma-0 pa-0"
             >
               <v-autocomplete
-                v-model="value"
                 label="Currency"
                 hide-details
                 dense
@@ -178,7 +120,7 @@
             :headers="headers"
             :items="desserts"
             :items-per-page="5"
-            class="elevation-1"
+            class="elevation-0"
           >
             <template #[`item.robots`]="{ item }">
               <v-container
@@ -390,12 +332,6 @@ export default {
       demoToken: null,
       demoRefreshToken: null,
       demoUserRole: null,
-      navLinks: [
-        { name: 'Trading Robots' },
-        { name: 'Referal' },
-        { name: 'About' },
-        { name: 'API' }
-      ],
       headers: [
         { text: 'Trading robots', value: 'robots' },
         { text: 'Currency', value: 'currency' },
@@ -434,13 +370,6 @@ export default {
       ]
     }
   },
-  beforeCreate () {
-    if (this.$store.getters.getUserRole === 'guest') {
-      this.$router.push({
-        path: '/'
-      })
-    }
-  },
   mounted () {
     this.demoUserRole = this.$store.getters.getUserRole
     this.demoToken = this.$store.getters.getToken
@@ -448,13 +377,6 @@ export default {
   },
 
   methods: {
-    logout () {
-      this.$store.dispatch('onLogout')
-      console.log(this.$store.getters.getUserRole)
-      this.$router.push({
-        path: '/'
-      })
-    }
   }
 }
 </script>
@@ -472,10 +394,11 @@ thead::after
     border-spacing: 0 8px;
 }
 tbody {
-    background-color: #eee;
+    background-color: #fff;
 }
 tr {
     line-height: 56px;
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.06);
 }
 td:first-child {
     border-top-left-radius: 12px;
@@ -491,10 +414,12 @@ th {
 th:first-child {
     border-top-left-radius: 12px;
     border-bottom-left-radius: 12px;
+    box-shadow: -12px 0px 12px rgba(0, 0, 0, 0.06);
 }
 th:last-child {
     border-bottom-right-radius: 12px;
     border-top-right-radius: 12px;
+    box-shadow: 12px 0px 12px rgba(0, 0, 0, 0.06);
 }
 
 </style>

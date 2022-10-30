@@ -20,7 +20,7 @@ export default {
     console.log(this.email)
     console.log(this.registration_token)
     try {
-      await this.$store.dispatch('onRegister', {
+      await this.$store.dispatch('onSignUp', {
         email: this.email,
         registrationToken: this.registration_token
       })

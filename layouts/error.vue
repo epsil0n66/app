@@ -1,6 +1,6 @@
 <template>
   <v-app light>
-    <v-main class="primary">
+    <v-main>
       <v-container class="d-flex pb-12 justify-center">
         <v-toolbar-title>{{ title }}</v-toolbar-title>
         <h1 v-if="error.statusCode === 404">
@@ -25,7 +25,7 @@
 <script>
 export default {
   name: 'EmptyLayout',
-  layout: 'empty',
+  layout: 'main',
   props: {
     error: {
       type: Object,
