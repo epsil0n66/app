@@ -5,7 +5,6 @@
 <script>
 export default {
   name: 'ArobotsFrontendRecoveryConfirm',
-  layout: 'main',
   data () {
     return {
       email: null,
@@ -19,14 +18,14 @@ export default {
     this.recoveryToken = url.slice(url.indexOf('=') + 1).slice(url.slice(url.indexOf('=') + 1).indexOf('=') + 1)
     console.log(this.email)
     console.log(this.recoveryToken)
-    try {
-      await this.$store.dispatch('onPasswordChange', {
-        email: this.email,
-        recoveryToken: this.recoveryToken
+    await this.$store.dispatch('onPasswordChange', {
+      email: this.email,
+      recoveryToken: this.recoveryToken
+    })
+      .catch((e) => {
+        console.log(e)
+        this.$router.push('/main')
       })
-    } catch (e) {
-      console.log(e)
-    }
   },
 
   methods: {

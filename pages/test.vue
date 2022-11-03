@@ -322,7 +322,6 @@ import IconCrypto from 'vue-cryptocurrency-icons'
 Vue.use(IconCrypto)
 export default {
   name: 'ArobotsFrontendTest',
-  layout: 'main',
   data () {
     return {
       headers: [

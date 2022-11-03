@@ -5,44 +5,45 @@
       color="white"
       elevation="1"
     >
-      <v-col cols="1" />
+      <div
+        class="d-none d-lg-block"
+        style="width:10vw"
+      />
       <img
         src="@/static/arobots.png"
         height="36px"
         style="cursor: pointer"
         @click="$router.push('/main')"
       >
-      <v-col cols="1" />
-      <v-col
-        cols="6"
-        justify="center"
+      <v-spacer />
+      <button
+        v-for="(item, index) in navLinks"
+        :key="index"
+        color="black"
+        class="text-sm-body-2 text-lg-body-1"
+        style="line-height:64px; margin: 0 2vw 0"
+        :style="[currentURL.includes(item.to) ? {'border-bottom': 'solid green'} : {'border-bottom': 'none'}]"
+        @click="$router.push(item.to)"
       >
-        <button
-          v-for="(item, index) in navLinks"
-          :key="index"
-          color="black"
-          class="mx-10"
-          style="line-height:64px;"
-          :style="[currentURL.includes(item.to) ? {'border-bottom': 'solid green'} : {'border-bottom': 'none'}]"
-          @click="$router.push(item.to)"
-        >
-          {{ item.name }}
-        </button>
-      </v-col>
+        {{ item.name }}
+      </button>
       <v-spacer />
       <v-col
         justify="end"
       >
         <v-row
+          class="profileRow"
           justify="center"
           align="center"
         >
-          <img
+          <v-avatar
             v-show="role === 'registered'"
-            height="45px"
-            width="45px"
-            class="rounded-lg mr-6"
+            size="36"
+            color="primary"
+            class="mr-2"
           >
+            <span class="white--text">AS</span>
+          </v-avatar>
           <v-menu>
             <template #activator="{ on, attrs }">
               <span
@@ -74,7 +75,6 @@
           </v-menu>
         </v-row>
       </v-col>
-      <v-col cols="1" />
     </v-app-bar>
     <v-main>
       <Nuxt />
@@ -90,10 +90,10 @@
         <v-col
           cols="3"
           align="start"
-          style="margin-left: 100px"
+          style="margin-left: 5vw"
         >
           <p
-            class="text-md-body-2 mb-1 white--text"
+            class="text-md-body-2 text-body-2 mb-1 white--text"
           >
             Arobots
           </p>
@@ -146,7 +146,7 @@
           </p>
         </v-col>
         <v-col
-          style="margin-right: 100px"
+          style="margin-right: 5vw"
           align="end"
         >
           <p
@@ -164,7 +164,7 @@
       </v-col>
       <v-col
         class="mb-4"
-        style="margin-left:85px"
+        style="margin-left:4vw"
         align="start"
       >
         <p
@@ -174,7 +174,7 @@
         </p>
       </v-col>
       <v-col
-        style="margin-right:85px"
+        style="margin-right:4vw"
         align="end"
       >
         <p
@@ -201,8 +201,17 @@ export default {
         { name: 'About', to: '/about' },
         { name: 'API', to: '/api' }
       ],
-      role: null,
       currentURL: null
+    }
+  },
+  computed: {
+    role () {
+      return this.$store.getters.getUserRole
+    }
+  },
+  watch: {
+    role (newRole, oldRole) {
+      console.log(newRole, oldRole)
     }
   },
   beforeCreate () {
@@ -214,7 +223,7 @@ export default {
     this.currentURL = document.URL
   },
   mounted () {
-    this.role = this.$store.getters.getUserRole
+    console.log(this.role)
     this.refreshToken()
     if (this.$store.getters.getUserRole === 'registered') {
       this.refreshToken()
@@ -224,7 +233,6 @@ export default {
       }, 600000)
     }
   },
-
   destroyed () {
     clearInterval(this.refresher)
   },
@@ -254,22 +262,25 @@ export default {
 * {
   font-family: 'Poppins', sans-serif;
 }
+.profileRow {
+  flex-wrap: nowrap;
+}
 .ellipse1 {
   position: absolute;
-  width: 300px;
-  height: 300px;
-  left: -100px;
-  top: 53px;
+  width: 21vw;
+  height: 39vh;
+  left: -7.3vw;
+  top: 7.9vh;
 
   background: rgba(26, 194, 0, 0.1);
   filter: blur(72px);
 }
 .ellipse2 {
   position: absolute;
-  width: 236px;
-  height: 236px;
-  left: 1357px;
-  top: 377px;
+  width: 17.2vw;
+  height: 30.7vh;
+  left: 99.3vw;
+  top: 49vh;
 
   background: rgba(26, 194, 0, 0.06);
   filter: blur(72px);

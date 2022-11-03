@@ -26,99 +26,130 @@
               Clear all
             </p>
           </v-row>
-          <v-row
-            align-content="center"
-            class="px-2"
-          >
+          <v-row no-gutters class="pb-4">
             <v-col
-              cols="2"
-              class="ma-0 pa-0"
+              cols="12"
+              md="6"
             >
-              <v-text-field
-                label="Search"
-                dense
-                outlined
-                class="mx-2 rounded-lg"
-              />
-            </v-col>
-            <v-col
-              cols="2"
-              class="ma-0 pa-0"
-            >
-              <v-select
-                label="Profit"
-                hide-details
-                dense
-                outlined
-                class="mx-2 rounded-lg"
-                :items="['0 - 10', '10 - 20', '30 - 40', '90 - 100']"
-              />
-            </v-col>
-            <v-col
-              cols="2"
-              class="ma-0 pa-0"
-            >
-              <v-select
-                label="Life"
-                hide-details
-                dense
-                outlined
-                class="mx-2 rounded-lg"
-                :items="['>1m', '>3m', '>12m']"
-              />
-            </v-col>
-            <v-col
-              cols="4"
-              class="ma-0 pa-0"
-            >
-              <v-autocomplete
-                label="Currency"
-                hide-details
-                dense
-                outlined
-                multiple
-                class="mx-2 rounded-lg"
-                :items="['USDT / USDT', 'USDT / UDDT', 'UWWT / USDT', 'USDT / UADT', 'USDT / WADT']"
-              >
-                <template
-                  #selection="{ item, index }"
+              <v-row no-gutters>
+                <v-col
+                  cols="12"
+                  sm="4"
+                  class="pb-4"
                 >
-                  <v-chip
-                    v-if="index <= 1"
-                  >
-                    <span>{{ item }}</span>
-                  </v-chip>
-                  <span
-                    v-if="index === 2"
-                    class="grey--text text-caption"
-                  >
-                    (+{{ value.length - 2 }} others)
-                  </span>
-                </template>
-              </v-autocomplete>
+                  <v-text-field
+                    v-model="filters.search"
+                    label="Search"
+                    hide-details
+                    dense
+                    outlined
+                    class="mx-2 rounded-lg"
+                  />
+                </v-col>
+                <v-col
+                  cols="12"
+                  sm="4"
+                  class="pb-4"
+                >
+                  <v-select
+                    v-model="filters.profit"
+                    label="Profit"
+                    hide-details
+                    dense
+                    outlined
+                    class="mx-2 rounded-lg"
+                    :items="filters.profitItems"
+                  />
+                </v-col>
+                <v-col
+                  cols="12"
+                  sm="4"
+                  class="pb-4"
+                >
+                  <v-select
+                    v-model="filters.life"
+                    label="Life"
+                    hide-details
+                    dense
+                    outlined
+                    class="mx-2 rounded-lg"
+                    :items="filters.lifeItems"
+                  />
+                </v-col>
+              </v-row>
             </v-col>
             <v-col
-              cols="2"
-              class="ma-0 pa-0"
+              cols="12"
+              md="6"
             >
-              <v-select
-                label="Exchange"
-                hide-details
-                dense
-                outlined
-                single-line
-                class="mx-2 rounded-lg"
-                :items="['Coinbase', 'Binance', 'Huobi Global']"
-              />
+              <v-row no-gutters>
+                <v-col
+                  cols="12"
+                  sm="4"
+                >
+                  <v-select
+                    v-model="filters.exchange"
+                    label="Exchange"
+                    hide-details
+                    dense
+                    outlined
+                    single-line
+                    class="mx-2 rounded-lg"
+                    :items="filters.exchangeItems"
+                  />
+                </v-col>
+                <v-col
+                  cols="12"
+                  sm="8"
+                  class="pb-4"
+                >
+                  <v-autocomplete
+                    v-model="filters.currency"
+                    label="Currency"
+                    hide-details
+                    dense
+                    outlined
+                    multiple
+                    class="mx-2 rounded-lg"
+                    :items="filters.currencyItems"
+                    @change="filterChipsFunction"
+                  >
+                    <template
+                      #selection="{ item, index }"
+                    >
+                      <v-chip
+                        v-if="index <= 1"
+                      >
+                        <span>{{ item }}</span>
+                      </v-chip>
+                      <span
+                        v-if="index === 2"
+                        class="grey--text text-caption"
+                      >
+                        (+{{ filters.currency.length - 2 }} others)
+                      </span>
+                    </template>
+                  </v-autocomplete>
+                </v-col>
+              </v-row>
             </v-col>
+          </v-row>
+          <v-row no-gutters>
+            <v-chip
+            class="mx-2 mb-2"
+            v-for="(item, index) in filters.filteredChips"
+            :key="index"
+            >
+            {{ item }}
+            </v-chip>
           </v-row>
         </v-card>
         <div
           style="z-index: 1; position:relative"
         >
           <v-data-table
-            :headers="headers"
-            :items="desserts"
+            :headers="robotsTableHeaders"
+            :items="robotsTable"
             :items-per-page="5"
             class="elevation-0"
           >
@@ -229,6 +260,7 @@
                 </v-icon>
                 <p
                   class="mb-0 ml-1 text-caption"
+                  :style="[item.profit > 0 ? { 'color': 'green' } : { 'color': 'red' }]"
                 >
                   {{ item.profit }}%
                 </p>
@@ -287,7 +319,10 @@
               >
                 <v-btn
                   color="green"
-                  class="rounded-lg"
+                  class="text-none"
+                  height="4.5vh"
+                  width="5.5vw"
+                  style="border-radius:12px ;"
                   outlined
                 >
                   Rent
@@ -326,13 +361,24 @@ import IconCrypto from 'vue-cryptocurrency-icons'
 Vue.use(IconCrypto)
 export default {
   name: 'ArobotsFrontendMain',
-  layout: 'main',
   data () {
     return {
       demoToken: null,
       demoRefreshToken: null,
       demoUserRole: null,
-      headers: [
+      filters: {
+        search: null,
+        profit: null,
+        profitItems: ['0 - 10', '10 - 20', '30 - 40', '90 - 100'],
+        life: null,
+        lifeItems: ['>1m', '>3m', '>12m'],
+        exchange: null,
+        exchangeItems: ['Coinbase', 'Binance', 'Huobi Global'],
+        currency: null,
+        currencyItems: ['USDT / USDT', 'USDT / UDDT', 'UWWT / USDT', 'USDT / UADT', 'USDT / WADT'],
+        filteredChips: null
+      },
+      robotsTableHeaders: [
         { text: 'Trading robots', value: 'robots' },
         { text: 'Currency', value: 'currency' },
         { text: 'Exchange', value: 'exchange' },
@@ -342,7 +388,7 @@ export default {
         { text: 'Chart of trading', value: 'chart' },
         { text: '', sortable: false, value: 'menu' }
       ],
-      desserts: [
+      robotsTable: [
         {
           currency: 'USDT/BNB',
           exchange: 'Binance',
@@ -371,12 +417,15 @@ export default {
     }
   },
   mounted () {
-    this.demoUserRole = this.$store.getters.getUserRole
-    this.demoToken = this.$store.getters.getToken
-    this.demoRefreshToken = this.$store.getters.getRefreshToken
+    this.UserRole = this.$store.getters.getUserRole
+    this.Token = this.$store.getters.getToken
+    this.RefreshToken = this.$store.getters.getRefreshToken
   },
 
   methods: {
+    filterChipsFunction () {
+      this.filters.filteredChips = this.filters.currency
+    }
   }
 }
 </script>
@@ -388,28 +437,50 @@ thead::after
     display: block;
     height: 8px;
     width: 100%;
-    background: white;
 }
 .v-data-table > .v-data-table__wrapper > table {
     border-spacing: 0 8px;
 }
+.theme--light.v-data-table {
+  background-color: transparent;
+}
 tbody {
-    background-color: #fff;
+    background-color: white;
 }
 tr {
-    line-height: 56px;
     box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.06);
 }
 td:first-child {
     border-top-left-radius: 12px;
     border-bottom-left-radius: 12px;
 }
+.v-data-table > .v-data-table__wrapper tbody tr:first-child:hover td:first-child {
+    border-top-left-radius: 12px;
+}
+.v-data-table > .v-data-table__wrapper tbody tr:first-child:hover td:last-child {
+    border-top-right-radius: 12px;
+}
+.v-data-table--has-bottom > .v-data-table__wrapper > table > tbody > tr:last-child:hover > td:first-child {
+    border-bottom-left-radius: 12px;
+}
+.v-data-table--has-bottom > .v-data-table__wrapper > table > tbody > tr:last-child:hover > td:last-child {
+    border-bottom-right-radius: 12px;
+}
 td:last-child {
+    border-bottom-right-radius: 12px;
+    border-top-right-radius: 12px;
+}
+td:first-child:hover {
+    border-top-left-radius: 12px;
+    border-bottom-left-radius: 12px;
+}
+td:last-child:hover {
     border-bottom-right-radius: 12px;
     border-top-right-radius: 12px;
 }
 th {
     background-color: rgb(255, 255, 255);
+    max-height: 32px;
 }
 th:first-child {
     border-top-left-radius: 12px;

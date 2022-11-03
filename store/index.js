@@ -76,9 +76,6 @@ export const actions = {
       localStorage.setItem('userRole', 'registered')
       this.$router.push({ path: '/main' })
     })
-      .catch((e) => {
-        commit('setAlert', e.response.data.errors.title, 'error')
-      })
   },
   async onPasswordChange ({ commit }, { email, recoveryToken }) {
     await AuthAPI.recovery(email, recoveryToken).then((res) => {
@@ -88,9 +85,6 @@ export const actions = {
       localStorage.setItem('userRole', 'registered')
       this.$router.push({ path: '/main' })
     })
-      .catch((e) => {
-        commit('setAlert', e.response.data.errors.title, 'error')
-      })
   },
   onSignOut ({ commit }) {
     localStorage.setItem('userRole', 'guest')

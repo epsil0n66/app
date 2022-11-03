@@ -5,7 +5,6 @@
 <script>
 export default {
   name: 'ArobotsFrontendAuth',
-  layout: 'main',
   data () {
     return {
       email: null,
@@ -26,6 +25,7 @@ export default {
       })
     } catch (e) {
       console.log(e)
+      this.$router.push('/main')
     }
   },
 
