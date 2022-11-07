@@ -57,6 +57,7 @@
                     hide-details
                     dense
                     outlined
+                    single-line
                     class="mx-2 rounded-lg"
                     :items="filters.profitItems"
                   />
@@ -72,6 +73,7 @@
                     hide-details
                     dense
                     outlined
+                    single-line
                     class="mx-2 rounded-lg"
                     :items="filters.lifeItems"
                   />
@@ -110,6 +112,7 @@
                     dense
                     outlined
                     multiple
+                    single-line
                     class="mx-2 rounded-lg"
                     :items="filters.currencyItems"
                     @change="filterChipsFunction"
@@ -136,11 +139,15 @@
           </v-row>
           <v-row no-gutters>
             <v-chip
-            class="mx-2 mb-2"
-            v-for="(item, index) in filters.filteredChips"
-            :key="index"
+              color="green"
+              outlined
+              close
+              @click:close="filters.filteredChips = filters.filteredChips.filter(filter => filter !== item); filters.currency = filters.filteredChips"
+              v-for="(item, index) in filters.filteredChips"
+              :key="index"
+              class="mx-2 mb-2 chip"
             >
-            {{ item }}
+              {{ item }}
             </v-chip>
           </v-row>
         </v-card>
@@ -420,17 +427,29 @@ export default {
     this.UserRole = this.$store.getters.getUserRole
     this.Token = this.$store.getters.getToken
     this.RefreshToken = this.$store.getters.getRefreshToken
+    this.$axios.get('http://arobots.evospb.ru/api/user/profile').then((res) => {
+      this.$store.commit('setUserNickname', res.data.nickname)
+    })
   },
 
   methods: {
     filterChipsFunction () {
       this.filters.filteredChips = this.filters.currency
+    },
+    filterChips (item) {
+      this.filters.filteredChips.filter(filter => filter !== item)
     }
   }
 }
 </script>
 
 <style>
+th {
+    font-weight: 400;
+}
+.v-chip.v-size--default {
+    border-radius: 12px;
+}
 thead::after
 {
     content: "";

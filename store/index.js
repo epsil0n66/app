@@ -2,12 +2,16 @@ import { AuthAPI } from '@/api/Auth'
 export const state = () => ({
   token: localStorage.getItem('token') || null,
   refreshToken: localStorage.getItem('refreshToken') || null,
-  userRole: localStorage.getItem('userRole') || null
+  userRole: localStorage.getItem('userRole') || null,
+  nickname: localStorage.getItem('nickname') || null
 })
 
 export const getters = {
   getUserRole (state) {
     return state.userRole
+  },
+  getUserNickname (state) {
+    return state.nickname
   },
   getToken (state) {
     return state.token
@@ -36,6 +40,10 @@ export const mutations = {
     state.userRole = userRole
     localStorage.setItem('userRole', userRole)
   },
+  setUserNickname (state, nickname) {
+    state.nickname = nickname
+    localStorage.setItem('nickname', nickname)
+  },
   setAlert (state, alertText, alertType) {
     state.alertText = alertText
     state.alertType = alertType
@@ -49,8 +57,12 @@ export const mutations = {
     localStorage.removeItem('refreshToken')
   },
   deleteUserRole (state) {
-    state.userRole = null
+    state.userRole = 'guest'
     localStorage.removeItem('userRole')
+  },
+  deleteUserNickname (state) {
+    state.nickname = null
+    localStorage.removeItem('nickname')
   }
 }
 
@@ -62,7 +74,7 @@ export const actions = {
         commit('setRefreshToken', res.headers.refresh)
       }
       commit('setUserRole', 'registered')
-      this.$axios.defaults.headers.Authorization = `Bearer ${res.headers.authorization}`
+      this.$axios.defaults.headers.Authorization = `${res.headers.authorization}`
       this.$router.push({
         path: '/main'
       })
@@ -87,10 +99,10 @@ export const actions = {
     })
   },
   onSignOut ({ commit }) {
-    localStorage.setItem('userRole', 'guest')
-    commit('setToken', null)
-    commit('setRefreshToken', null)
-    commit('setUserRole', 'guest')
+    commit('deleteToken')
+    commit('deleteRefreshToken')
+    commit('deleteUserRole')
+    commit('deleteUserNickname')
     delete this.$axios.defaults.headers.Authorization
   }
 }

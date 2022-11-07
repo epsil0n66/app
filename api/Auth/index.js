@@ -24,3 +24,9 @@ export const AuthAPI = {
     // return null
   }
 }
+export const UserAPI = {
+  profile () {
+    const url = '/user/profile'
+    return DefaultAPIInstance.get(url)
+  }
+}

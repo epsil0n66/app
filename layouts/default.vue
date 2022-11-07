@@ -42,7 +42,7 @@
             color="primary"
             class="mr-2"
           >
-            <span class="white--text">AS</span>
+            <span class="white--text">{{ nickname.slice(0, 2) }}</span>
           </v-avatar>
           <v-menu>
             <template #activator="{ on, attrs }">
@@ -51,7 +51,7 @@
                 style="cursor:pointer;"
                 v-on="on"
               >
-                {{ role }}
+                {{ nickname }}
               </span>
             </template>
             <v-list>
@@ -207,11 +207,19 @@ export default {
   computed: {
     role () {
       return this.$store.getters.getUserRole
+    },
+    nickname () {
+      if (this.$store.getters.getUserNickname) {
+        return this.$store.getters.getUserNickname
+      } else { return 'User' }
     }
   },
   watch: {
     role (newRole, oldRole) {
       console.log(newRole, oldRole)
+    },
+    nickname (newNickname, oldNickname) {
+      console.log(newNickname, oldNickname)
     }
   },
   beforeCreate () {
@@ -223,12 +231,11 @@ export default {
     this.currentURL = document.URL
   },
   mounted () {
-    console.log(this.role)
+    console.log(this.$store.getters.getUserNickname)
     this.refreshToken()
     if (this.$store.getters.getUserRole === 'registered') {
       this.refreshToken()
       this.refresher = setInterval(() => {
-        console.log('qwe')
         this.refreshToken()
       }, 600000)
     }
@@ -248,7 +255,7 @@ export default {
       this.$axios.post(`${config.apiUrl}/user/session/refresh`, { refresh_token: this.$store.getters.getRefreshToken })
         .then((response) => {
           console.log(response)
-          this.$axios.defaults.headers.Authorization = `Bearer ${response.headers.authorization}`
+          this.$axios.defaults.headers.Authorization = `${response.headers.authorization}`
         })
         .catch((e) => {
           console.log(e)

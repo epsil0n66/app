@@ -5,7 +5,7 @@
       no-gutters
       class="d-flex align-center"
       style="height: 10vh; width: 100vw; background-color: #aaf7a3; position: fixed; z-index: 10; top: 0"
-      :style="[alertType === 'error' ? { 'background-color': 'red' } : { 'background-color': '#aaf7a3' }]"
+      :style="[alertType === 'error' ? { 'background-color': '#f94449' } : { 'background-color': '#aaf7a3' }]"
     >
       <v-icon
         v-if="alertType != 'error'"
@@ -38,7 +38,7 @@
       </p>
       <v-spacer />
       <v-icon
-        color="grey"
+        color="white"
         float="right"
         style="cursor:pointer; margin-right: 10vw;"
         @click="pageAlert = false"
@@ -474,6 +474,9 @@ export default {
           this.pageAlertText = e.response.data.errors.title
           this.alertType = 'error'
           this.pageAlert = true
+          setTimeout(() => {
+            this.pageAlert = false
+          }, 5000)
         }
       }
     },
@@ -492,6 +495,9 @@ export default {
             this.pageAlertText = e.response.data.errors.title
             this.alertType = 'error'
             this.pageAlert = true
+            setTimeout(() => {
+              this.pageAlert = false
+            }, 5000)
           })
       }
     },
@@ -510,6 +516,9 @@ export default {
           this.pageAlertText = e.response.data.errors.title
           this.alertType = 'error'
           this.pageAlert = true
+          setTimeout(() => {
+            this.pageAlert = false
+          }, 5000)
         })
     }
   }
