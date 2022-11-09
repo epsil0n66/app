@@ -55,6 +55,17 @@
               </span>
             </template>
             <v-list>
+              <v-list-item
+                v-show="role === 'registered'"
+              >
+                <v-list-item-title
+                  v-show="role === 'registered'"
+                  style="cursor:pointer;"
+                  @click="$router.push('/profile/addedrobots')"
+                >
+                  Added robots
+                </v-list-item-title>
+              </v-list-item>
               <v-list-item>
                 <v-list-item-title
                   v-show="role === 'registered'"
@@ -78,8 +89,8 @@
     </v-app-bar>
     <v-main>
       <Nuxt />
-      <div class="ellipse1" style="pointer-events: none" />
-      <div class="ellipse2" style="pointer-events: none" />
+      <!-- <div class="ellipse1" style="pointer-events: none" />
+      <div class="ellipse2" style="pointer-events: none" /> -->
     </v-main>
     <v-footer
       color="#1F1F1F"
@@ -272,25 +283,25 @@ export default {
 .profileRow {
   flex-wrap: nowrap;
 }
-.ellipse1 {
-  position: absolute;
-  width: 21vw;
-  height: 39vh;
-  left: -7.3vw;
-  top: 7.9vh;
+// .ellipse1 {
+//   position: absolute;
+//   width: 21vw;
+//   height: 39vh;
+//   left: -7.3vw;
+//   top: 7.9vh;
 
-  background: rgba(26, 194, 0, 0.1);
-  filter: blur(72px);
-}
-.ellipse2 {
-  position: absolute;
-  width: 17.2vw;
-  height: 30.7vh;
-  left: 99.3vw;
-  top: 49vh;
+//   background: rgba(26, 194, 0, 0.1);
+//   filter: blur(72px);
+// }
+// .ellipse2 {
+//   position: absolute;
+//   width: 17.2vw;
+//   height: 30.7vh;
+//   left: 99.3vw;
+//   top: 49vh;
 
-  background: rgba(26, 194, 0, 0.06);
-  filter: blur(72px);
-}
+//   background: rgba(26, 194, 0, 0.06);
+//   filter: blur(72px);
+// }
 
 </style>

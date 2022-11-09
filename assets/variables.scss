@@ -2,13 +2,15 @@
 //
 // The variables you want to modify
 // $font-size-root: 20px;
-$rounded: (
-    'sm': 9px,
-    null: 12px,
-);
-$body-font-family: Poppins;
-$heading-font-family: Poppins;
-$title-font: Poppins;
+.theme--light.v-btn.v-btn--has-bg {
+  color:green;
+  background-color: white;
+}
+.v-btn {
+  border-radius: 12px;
+  text-transform: none;
+  font-weight: 400;
+}
 $font-family:'Poppins';
 .v-application {
     [class*='text-'] {
@@ -18,5 +20,68 @@ $font-family:'Poppins';
     font-family: $font-family, sans-serif !important;
   }
 $font-size-root: 18px;
-$data-table-regular-row-height: 96px;
-$data-table-dense-header-height: 96px;
+th {
+  font-weight: 400;
+}
+thead::after
+{
+  content: "";
+  display: block;
+  height: 8px;
+  width: 100%;
+}
+.v-data-table > .v-data-table__wrapper > table {
+  border-spacing: 0 8px;
+}
+.theme--light.v-data-table {
+background-color: transparent;
+}
+tbody {
+  background-color: white;
+}
+tr {
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.06);
+}
+td:first-child {
+  border-top-left-radius: 12px;
+  border-bottom-left-radius: 12px;
+}
+.v-data-table > .v-data-table__wrapper tbody tr:first-child:hover td:first-child {
+  border-top-left-radius: 12px;
+}
+.v-data-table > .v-data-table__wrapper tbody tr:first-child:hover td:last-child {
+  border-top-right-radius: 12px;
+}
+.v-data-table--has-bottom > .v-data-table__wrapper > table > tbody > tr:last-child:hover > td:first-child {
+  border-bottom-left-radius: 12px;
+}
+.v-data-table--has-bottom > .v-data-table__wrapper > table > tbody > tr:last-child:hover > td:last-child {
+  border-bottom-right-radius: 12px;
+}
+td:last-child {
+  border-bottom-right-radius: 12px;
+  border-top-right-radius: 12px;
+}
+td:first-child:hover {
+  border-top-left-radius: 12px;
+  border-bottom-left-radius: 12px;
+}
+td:last-child:hover {
+  border-bottom-right-radius: 12px;
+  border-top-right-radius: 12px;
+}
+th {
+  background-color: rgb(255, 255, 255);
+  max-height: 32px;
+}
+th:first-child {
+  border-top-left-radius: 12px;
+  border-bottom-left-radius: 12px;
+  box-shadow: -12px 0px 12px rgba(0, 0, 0, 0.06);
+}
+th:last-child {
+  border-bottom-right-radius: 12px;
+  border-top-right-radius: 12px;
+  box-shadow: 12px 0px 12px rgba(0, 0, 0, 0.06);
+}
+

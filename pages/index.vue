@@ -237,13 +237,21 @@
                     label="Email"
                     placeholder="Email"
                   />
+                  <v-checkbox
+                    v-model="termsCheckbox"
+                    required
+                    class="mt-0"
+                    :rules="[v => !!v || 'You must agree to continue!']"
+                    color="primary"
+                    label="I agree to the Term of use"
+                  />
                 </v-form>
                 <v-btn
                   color="primary"
                   width="100%"
                   height="48px"
+                  class="mt-2"
                   style="border-radius:12px"
-                  class="mt-8"
                   @click="signup"
                 >
                   <p
@@ -426,6 +434,7 @@ export default {
       recoveryEmailInput: null,
       loginFormValidation: false,
       signupFormValidation: false,
+      termsCheckbox: false,
       visibleRecoveryPage: false,
       alert: false,
       alertSignUp: false,

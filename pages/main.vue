@@ -44,6 +44,7 @@
                     dense
                     outlined
                     class="mx-2 rounded-lg"
+                    @change="filterQuery"
                   />
                 </v-col>
                 <v-col
@@ -98,6 +99,7 @@
                     single-line
                     class="mx-2 rounded-lg"
                     :items="filters.exchangeItems"
+                    @change="filterQuery"
                   />
                 </v-col>
                 <v-col
@@ -115,7 +117,7 @@
                     single-line
                     class="mx-2 rounded-lg"
                     :items="filters.currencyItems"
-                    @change="filterChipsFunction"
+                    @change="filterQuery"
                   >
                     <template
                       #selection="{ item, index }"
@@ -139,13 +141,13 @@
           </v-row>
           <v-row no-gutters>
             <v-chip
+              v-for="(item, index) in filters.filteredChips"
+              :key="index"
               color="green"
               outlined
               close
-              @click:close="filters.filteredChips = filters.filteredChips.filter(filter => filter !== item); filters.currency = filters.filteredChips"
-              v-for="(item, index) in filters.filteredChips"
-              :key="index"
               class="mx-2 mb-2 chip"
+              @click:close="filters.filteredChips = filters.filteredChips.filter(filter => filter !== item); filters.currency = filters.filteredChips"
             >
               {{ item }}
             </v-chip>
@@ -154,208 +156,9 @@
         <div
           style="z-index: 1; position:relative"
         >
-          <v-data-table
-            :headers="robotsTableHeaders"
-            :items="robotsTable"
-            :items-per-page="5"
-            class="elevation-0"
-          >
-            <template #[`item.robots`]="{ item }">
-              <v-container
-                class="pa-0 mx-auto"
-              >
-                <v-row
-                  class="ma-0 align-center"
-                >
-                  <img
-                    src="@/static/arobots.png"
-                    height="40px"
-                    width="40px"
-                    style="border-radius: 12px;"
-                  >
-                  <v-col>
-                    <p
-                      class="text-md-body-1 mb-1 font-weight-bold"
-                    >
-                      Traderist
-                    </p>
-                    <p
-                      class="text-caption mb-1 text--secondary"
-                    >
-                      Company Robots
-                    </p>
-                  </v-col>
-                </v-row>
-                {{ item.robots }}
-              </v-container>
-            </template>
-            <template #[`item.currency`]="{ item }">
-              <v-row
-                class="ma-0 align-center"
-              >
-                <IconCrypto
-                  class="mr-1"
-                  :coinname="item.currency.split('/')[0]"
-                  color="color"
-                  format="svg"
-                  height="20px"
-                  width="20px"
-                />
-                <p
-                  class="mb-0"
-                >
-                  {{ item.currency.split('/')[0] }}
-                </p>
-                <p
-                  class="mb-0 ml-1"
-                >
-                  /
-                </p>
-                <IconCrypto
-                  class="mx-1"
-                  :coinname="item.currency.split('/')[1]"
-                  color="color"
-                  format="svg"
-                  height="20px"
-                  width="20px"
-                />
-                <p
-                  class="mb-0"
-                >
-                  {{ item.currency.split('/')[1] }}
-                </p>
-              </v-row>
-            </template>
-            <template #[`item.exchange`]="{ item }">
-              <v-row
-                class="ma-0 align-center"
-              >
-                <IconCrypto
-                  class="mr-1"
-                  coinname="BNB"
-                  color="color"
-                  format="svg"
-                  height="20px"
-                  width="20px"
-                />
-                <p
-                  class="mb-0"
-                >
-                  {{ item.exchange }}
-                </p>
-              </v-row>
-            </template>
-            <template #[`item.profit`]="{ item }">
-              <v-row
-                no-gutters
-                dense
-                class="ma-0 px-2 align-center justify-center"
-                :style="[item.profit > 0 ? {'border': 'solid 1px green'} : { 'border': 'solid 1px red' }]"
-                style="border-radius: 16px;"
-              >
-                <v-icon
-                  v-if="item.profit > 0"
-                  color="green"
-                >
-                  mdi-trending-up
-                </v-icon>
-                <v-icon
-                  v-else
-                  color="red"
-                >
-                  mdi-trending-down
-                </v-icon>
-                <p
-                  class="mb-0 ml-1 text-caption"
-                  :style="[item.profit > 0 ? { 'color': 'green' } : { 'color': 'red' }]"
-                >
-                  {{ item.profit }}%
-                </p>
-              </v-row>
-            </template>
-            <template #[`item.trades`]="{ item }">
-              <v-row
-                class="ma-0 align-center"
-              >
-                <v-icon
-                  color="green"
-                >
-                  mdi-swap-horizontal
-                </v-icon>
-                <p
-                  class="mb-0 ml-1"
-                >
-                  {{ item.trades }}
-                </p>
-              </v-row>
-            </template>
-            <template #[`item.time`]="{ item }">
-              <v-row
-                class="ma-0 align-center"
-              >
-                <v-icon
-                  color="green"
-                >
-                  mdi-clock-time-three-outline
-                </v-icon>
-                <p
-                  class="mb-0 ml-1"
-                >
-                  {{ item.time }}
-                </p>
-              </v-row>
-            </template>
-            <template #[`item.chart`]="{ item }">
-              <v-row
-                class="ma-0 align-center"
-              >
-                <v-sparkline
-                  :fill="false"
-                  :gradient="['green']"
-                  :line-width="2"
-                  :padding="8"
-                  :smooth="10"
-                  :value="item.chart"
-                  auto-draw
-                />
-              </v-row>
-            </template>
-            <template #[`item.menu`]="{ item }">
-              <v-row
-                class="ma-0 align-center"
-              >
-                <v-btn
-                  color="green"
-                  class="text-none"
-                  height="4.5vh"
-                  width="5.5vw"
-                  style="border-radius:12px ;"
-                  outlined
-                >
-                  Rent
-                </v-btn>
-                <v-icon
-                  small
-                  class="ml-2"
-                  color="green"
-                >
-                  mdi-star-outline
-                </v-icon>
-                <v-icon
-                  small
-                  class="ml-2"
-                  color="green"
-                >
-                  mdi-chevron-down
-                </v-icon>
-                <p
-                  class="mb-0 ml-1"
-                >
-                  {{ item.menu }}
-                </p>
-              </v-row>
-            </template>
-          </v-data-table>
+          <RobotsTable
+            :robots-table-data="robotsTableData"
+          />
         </div>
       </v-card>
     </v-main>
@@ -365,15 +168,20 @@
 <script>
 import Vue from 'vue'
 import IconCrypto from 'vue-cryptocurrency-icons'
+import RobotsTable from '~/components/robotsTable.vue'
+import config from '@/config'
 Vue.use(IconCrypto)
 export default {
   name: 'ArobotsFrontendMain',
+  components: { RobotsTable },
   data () {
     return {
       demoToken: null,
       demoRefreshToken: null,
       demoUserRole: null,
+      robotsTableData: [],
       filters: {
+        filterQuery: '',
         search: null,
         profit: null,
         profitItems: ['0 - 10', '10 - 20', '30 - 40', '90 - 100'],
@@ -384,132 +192,51 @@ export default {
         currency: null,
         currencyItems: ['USDT / USDT', 'USDT / UDDT', 'UWWT / USDT', 'USDT / UADT', 'USDT / WADT'],
         filteredChips: null
-      },
-      robotsTableHeaders: [
-        { text: 'Trading robots', value: 'robots' },
-        { text: 'Currency', value: 'currency' },
-        { text: 'Exchange', value: 'exchange' },
-        { text: 'Profit', value: 'profit' },
-        { text: 'Trades', value: 'trades' },
-        { text: 'Time', value: 'time' },
-        { text: 'Chart of trading', value: 'chart' },
-        { text: '', sortable: false, value: 'menu' }
-      ],
-      robotsTable: [
-        {
-          currency: 'USDT/BNB',
-          exchange: 'Binance',
-          profit: 92,
-          trades: 242,
-          time: '1y 5m',
-          chart: [5, 2, 5, 9, 10, 3, 9, 1, 8, 0]
-        },
-        {
-          currency: 'ETH/USD',
-          exchange: 'Binance',
-          profit: -92,
-          trades: 122,
-          time: '1y 3m',
-          chart: [1, 2, 5, 9, 2, 5, 10, 8, 3, 5]
-        },
-        {
-          currency: 'RUB/ADA',
-          exchange: 'Binance',
-          profit: 5,
-          trades: 32,
-          time: '3m',
-          chart: [3, 9, 1, 10, 8, 2, 1, 4, 6, 5]
-        }
-      ]
+      }
     }
   },
   mounted () {
     this.UserRole = this.$store.getters.getUserRole
     this.Token = this.$store.getters.getToken
     this.RefreshToken = this.$store.getters.getRefreshToken
-    this.$axios.get('http://arobots.evospb.ru/api/user/profile').then((res) => {
-      this.$store.commit('setUserNickname', res.data.nickname)
+    this.$axios.get(`${config.apiUrl}/robots`).then((res) => {
+      this.robotsTableData = res.data
+    })
+    this.$axios.get(`${config.apiUrl}/user/profile`).then((res) => {
+      console.log(res.data)
+      if (res.data.nickname) {
+        this.$store.commit('setUserNickname', res.data.nickname)
+      } else {
+        this.$store.commit('setUserNickname', res.data.email)
+      }
     })
   },
-
   methods: {
-    filterChipsFunction () {
-      this.filters.filteredChips = this.filters.currency
-    },
     filterChips (item) {
       this.filters.filteredChips.filter(filter => filter !== item)
+    },
+    filterQuery () {
+      this.filters.filterQuery = ''
+      if (this.filters.search) {
+        this.filters.filterQuery += `search_by_field=${this.filters.search}&`
+      }
+      if (this.filters.exchange) {
+        this.filters.filterQuery += `exchange_id=${this.filters.exchange}&`
+      }
+      if (this.filters.currency) {
+        this.filters.filterQuery += `currency_id=${this.filters.currency}`
+      }
+      this.filters.filteredChips = this.filters.currency
+      console.log(this.filters.filterQuery)
     }
   }
 }
 </script>
 
 <style>
-th {
-    font-weight: 400;
-}
+
 .v-chip.v-size--default {
     border-radius: 12px;
-}
-thead::after
-{
-    content: "";
-    display: block;
-    height: 8px;
-    width: 100%;
-}
-.v-data-table > .v-data-table__wrapper > table {
-    border-spacing: 0 8px;
-}
-.theme--light.v-data-table {
-  background-color: transparent;
-}
-tbody {
-    background-color: white;
-}
-tr {
-    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.06);
-}
-td:first-child {
-    border-top-left-radius: 12px;
-    border-bottom-left-radius: 12px;
-}
-.v-data-table > .v-data-table__wrapper tbody tr:first-child:hover td:first-child {
-    border-top-left-radius: 12px;
-}
-.v-data-table > .v-data-table__wrapper tbody tr:first-child:hover td:last-child {
-    border-top-right-radius: 12px;
-}
-.v-data-table--has-bottom > .v-data-table__wrapper > table > tbody > tr:last-child:hover > td:first-child {
-    border-bottom-left-radius: 12px;
-}
-.v-data-table--has-bottom > .v-data-table__wrapper > table > tbody > tr:last-child:hover > td:last-child {
-    border-bottom-right-radius: 12px;
-}
-td:last-child {
-    border-bottom-right-radius: 12px;
-    border-top-right-radius: 12px;
-}
-td:first-child:hover {
-    border-top-left-radius: 12px;
-    border-bottom-left-radius: 12px;
-}
-td:last-child:hover {
-    border-bottom-right-radius: 12px;
-    border-top-right-radius: 12px;
-}
-th {
-    background-color: rgb(255, 255, 255);
-    max-height: 32px;
-}
-th:first-child {
-    border-top-left-radius: 12px;
-    border-bottom-left-radius: 12px;
-    box-shadow: -12px 0px 12px rgba(0, 0, 0, 0.06);
-}
-th:last-child {
-    border-bottom-right-radius: 12px;
-    border-top-right-radius: 12px;
-    box-shadow: 12px 0px 12px rgba(0, 0, 0, 0.06);
 }
 
 </style>
