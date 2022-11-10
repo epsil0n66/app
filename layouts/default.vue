@@ -75,7 +75,7 @@
                   Sign out
                 </v-list-item-title>
                 <v-list-item-title
-                  v-show="role === 'guest'"
+                  v-show="role !== 'registered'"
                   style="cursor:pointer;"
                   @click="$router.push('/')"
                 >
@@ -199,7 +199,6 @@
 </template>
 
 <script>
-import config from '@/config'
 export default {
   name: 'ArobotsFrontendMain',
 
@@ -243,16 +242,8 @@ export default {
   },
   mounted () {
     console.log(this.$store.getters.getUserNickname)
-    this.refreshToken()
-    if (this.$store.getters.getUserRole === 'registered') {
-      this.refreshToken()
-      this.refresher = setInterval(() => {
-        this.refreshToken()
-      }, 600000)
-    }
   },
   destroyed () {
-    clearInterval(this.refresher)
   },
   methods: {
     signOut () {
@@ -261,16 +252,6 @@ export default {
       this.$router.push({
         path: '/'
       })
-    },
-    refreshToken () {
-      this.$axios.post(`${config.apiUrl}/user/session/refresh`, { refresh_token: this.$store.getters.getRefreshToken })
-        .then((response) => {
-          console.log(response)
-          this.$axios.defaults.headers.Authorization = `${response.headers.authorization}`
-        })
-        .catch((e) => {
-          console.log(e)
-        })
     }
   }
 }

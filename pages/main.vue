@@ -22,6 +22,8 @@
             <v-spacer />
             <p
               class="font-display mr-5 mt-5 green--text"
+              style="cursor:pointer"
+              @click="clearFilters"
             >
               Clear all
             </p>
@@ -44,7 +46,7 @@
                     dense
                     outlined
                     class="mx-2 rounded-lg"
-                    @change="filterQuery"
+                    @keyup="filterQuery"
                   />
                 </v-col>
                 <v-col
@@ -93,10 +95,12 @@
                   <v-select
                     v-model="filters.exchange"
                     label="Exchange"
+                    return-object
                     hide-details
                     dense
                     outlined
                     single-line
+                    item-text="name"
                     class="mx-2 rounded-lg"
                     :items="filters.exchangeItems"
                     @change="filterQuery"
@@ -111,13 +115,14 @@
                     v-model="filters.currency"
                     label="Currency"
                     hide-details
+                    item-text="name"
+                    return-object
                     dense
                     outlined
                     multiple
                     single-line
                     class="mx-2 rounded-lg"
                     :items="filters.currencyItems"
-                    @change="filterQuery"
                   >
                     <template
                       #selection="{ item, index }"
@@ -125,7 +130,7 @@
                       <v-chip
                         v-if="index <= 1"
                       >
-                        <span>{{ item }}</span>
+                        <span>{{ item.name }}</span>
                       </v-chip>
                       <span
                         v-if="index === 2"
@@ -149,7 +154,7 @@
               class="mx-2 mb-2 chip"
               @click:close="filters.filteredChips = filters.filteredChips.filter(filter => filter !== item); filters.currency = filters.filteredChips"
             >
-              {{ item }}
+              {{ item.name }}
             </v-chip>
           </v-row>
         </v-card>
@@ -157,7 +162,14 @@
           style="z-index: 1; position:relative"
         >
           <RobotsTable
+            :hide-footer="true"
             :robots-table-data="robotsTableData"
+          />
+          <v-pagination
+            v-model="filters.page"
+            class="my-8"
+            :length="100"
+            :total-visible="10"
           />
         </div>
       </v-card>
@@ -188,11 +200,20 @@ export default {
         life: null,
         lifeItems: ['>1m', '>3m', '>12m'],
         exchange: null,
-        exchangeItems: ['Coinbase', 'Binance', 'Huobi Global'],
+        exchangeItems: [],
         currency: null,
-        currencyItems: ['USDT / USDT', 'USDT / UDDT', 'UWWT / USDT', 'USDT / UADT', 'USDT / WADT'],
-        filteredChips: null
+        currencyItems: [],
+        filteredChips: null,
+        page: 1
       }
+    }
+  },
+  watch: {
+    'filters.page' () {
+      this.filterQuery()
+    },
+    'filters.currency' () {
+      this.filterQuery()
     }
   },
   mounted () {
@@ -202,13 +223,13 @@ export default {
     this.$axios.get(`${config.apiUrl}/robots`).then((res) => {
       this.robotsTableData = res.data
     })
-    this.$axios.get(`${config.apiUrl}/user/profile`).then((res) => {
+    this.$axios.get(`${config.apiUrl}/currencies`).then((res) => {
       console.log(res.data)
-      if (res.data.nickname) {
-        this.$store.commit('setUserNickname', res.data.nickname)
-      } else {
-        this.$store.commit('setUserNickname', res.data.email)
-      }
+      this.filters.currencyItems = res.data
+    })
+    this.$axios.get(`${config.apiUrl}/exchanges`).then((res) => {
+      console.log(res.data)
+      this.filters.exchangeItems = res.data
     })
   },
   methods: {
@@ -217,17 +238,32 @@ export default {
     },
     filterQuery () {
       this.filters.filterQuery = ''
+      if (this.filters.page) {
+        this.filters.filterQuery += `page=${this.filters.page}&`
+      }
       if (this.filters.search) {
         this.filters.filterQuery += `search_by_field=${this.filters.search}&`
       }
       if (this.filters.exchange) {
-        this.filters.filterQuery += `exchange_id=${this.filters.exchange}&`
+        this.filters.filterQuery += `exchange_id=${this.filters.exchange.id}&`
       }
       if (this.filters.currency) {
-        this.filters.filterQuery += `currency_id=${this.filters.currency}`
+        let result = JSON.stringify(this.filters.currency.map(item => `currency_ids[]=${item.id}`)).replace(/,/g, '&').replace(/"/g, '')
+        result = result.slice(1, result.lastIndexOf(']'))
+        this.filters.filterQuery += `${result}`
       }
       this.filters.filteredChips = this.filters.currency
-      console.log(this.filters.filterQuery)
+      this.$axios.get(`${config.apiUrl}/robots?${this.filters.filterQuery}`).then((res) => {
+        this.robotsTableData = res.data
+      })
+    },
+    clearFilters () {
+      this.filters.search = null
+      this.filters.profit = null
+      this.filters.life = null
+      this.filters.exchange = null
+      this.filters.currency = null
+      this.filterQuery()
     }
   }
 }

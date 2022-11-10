@@ -18,10 +18,10 @@ export const AuthAPI = {
     const data = { email, recovery_token }
     return LoginAPIInstance.post(url, data)
   },
-  logout () {
-    const url = '/logout'
-    return DefaultAPIInstance.post(url)
-    // return null
+  refresh (refresh_token) {
+    const url = '/user/session/refresh'
+    const data = { refresh_token }
+    return DefaultAPIInstance.post(url, data)
   }
 }
 export const UserAPI = {

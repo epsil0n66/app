@@ -69,18 +69,23 @@
                     >
                       Avatar
                     </h3>
-                    <p
-                      class="mb-1"
-                      style="color:#4CAF50; cursor: pointer;"
-                      @click="upload"
+                    <input id="file" type="file" class="inputfile">
+                    <label
+                      for="file"
                     >
-                      <v-icon
-                        color="green"
+                      <p
+                        class="mb-1"
+                        style="color:#4CAF50; cursor: pointer;"
+                        @click="upload"
                       >
-                        mdi-upload
-                      </v-icon>
-                      Upload
-                    </p>
+                        <v-icon
+                          color="green"
+                        >
+                          mdi-upload
+                        </v-icon>
+                        Upload
+                      </p>
+                    </label>
                     <p
                       class="text-caption mb-1"
                     >
@@ -252,5 +257,12 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
+.inputfile {
+width: 0.1px;
+height: 0.1px;
+opacity: 0;
+overflow: hidden;
+position: absolute;
+z-index: -1;
+}
 </style>

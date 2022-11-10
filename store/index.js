@@ -1,4 +1,6 @@
-import { AuthAPI } from '@/api/Auth'
+import { AuthAPI, UserAPI } from '@/api/Auth'
+import { DefaultAPIInstance } from '@/api'
+
 export const state = () => ({
   token: localStorage.getItem('token') || null,
   refreshToken: localStorage.getItem('refreshToken') || null,
@@ -67,14 +69,28 @@ export const mutations = {
 }
 
 export const actions = {
-  async onSignIn ({ commit }, { email, password }) {
+  async onSignIn ({ commit, dispatch }, { email, password }) {
     await AuthAPI.login(email, password).then((res) => {
+      this.$axios.interceptors.response.use(function (response) {
+        return response
+      }, function (error) {
+        dispatch('onRefresh')
+        const response = error.response
+        if (response) {
+          if (response.status === 401) {
+            dispatch('onSignOut')
+              .then(this.$router.push('/'))
+          }
+        }
+        return Promise.reject(error)
+      })
       commit('setToken', res.headers.authorization)
+      DefaultAPIInstance.defaults.headers.Authorization = `${res.headers.authorization}`
       if (res.headers.refresh) {
         commit('setRefreshToken', res.headers.refresh)
       }
       commit('setUserRole', 'registered')
-      this.$axios.defaults.headers.Authorization = `${res.headers.authorization}`
+      dispatch('onProfile')
       this.$router.push({
         path: '/main'
       })
@@ -98,11 +114,27 @@ export const actions = {
       this.$router.push({ path: '/main' })
     })
   },
+  async onRefresh ({ commit, getters }) {
+    await AuthAPI.refresh(getters.getRefreshToken).then((res) => {
+      commit('setToken', res.headers.authorization)
+    })
+  },
+  async onProfile ({ commit }) {
+    await UserAPI.profile().then((res) => {
+      console.log(res.data)
+      if (res.data.nickname) {
+        commit('setUserNickname', res.data.nickname)
+      } else {
+        commit('setUserNickname', res.data.email)
+      }
+    })
+  },
   onSignOut ({ commit }) {
     commit('deleteToken')
     commit('deleteRefreshToken')
     commit('deleteUserRole')
     commit('deleteUserNickname')
-    delete this.$axios.defaults.headers.Authorization
+    delete DefaultAPIInstance.defaults.headers.Authorization
+    DefaultAPIInstance.interceptors.response.eject()
   }
 }

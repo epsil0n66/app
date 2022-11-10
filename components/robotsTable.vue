@@ -3,7 +3,8 @@
     <v-data-table
       :headers="robotsTableHeaders"
       :items="robotsTableData"
-      :items-per-page="5"
+      :hide-default-footer="hideFooter"
+      :items-per-page="10"
       class="elevation-0"
     >
       <template #[`item.robots`]="{ item }">
@@ -208,7 +209,7 @@
 <script>
 export default {
   name: 'ArobotsFrontendAddedRobots',
-  props: ['robotsTableData'],
+  props: ['robotsTableData', 'hideFooter'],
   data () {
     return {
       robotsTableHeaders: [
