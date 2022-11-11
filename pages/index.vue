@@ -243,8 +243,21 @@
                     class="mt-0"
                     :rules="[v => !!v || 'You must agree to continue!']"
                     color="primary"
-                    label="I agree to the Term of use"
-                  />
+                  >
+                    <template #label>
+                      <div>
+                        I agree with the
+                        <a
+                          target="_blank"
+                          href="/terms"
+                          style="color:black;margin: 0;padding: 0;"
+                          @click.stop
+                        >
+                          Term of use
+                        </a>
+                      </div>
+                    </template>
+                  </v-checkbox>
                 </v-form>
                 <v-btn
                   color="primary"

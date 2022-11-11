@@ -16,7 +16,7 @@
               width="150px"
               class="white--text mb-4"
               color="primary"
-              @click="addRobot"
+              @click="addRobotDialog = true"
             >
               Add robot
             </v-btn>
@@ -27,197 +27,221 @@
           v-model="addRobotDialog"
           width="50vw"
         >
-          <v-card>
-            <v-row
-              no-gutters
-              dense
-            >
-              <v-spacer />
-              <v-icon
-                class="ma-3"
-                @click="addRobotDialog = false"
-              >
-                mdi-close-circle-outline
-              </v-icon>
-            </v-row>
-            <div
-              style="margin-left:3vw;margin-right:3vw"
-            >
-              <h1
-                class="mb-8"
-              >
-                Add robot
-              </h1>
-              <v-container
+          <v-form
+            ref="addRobotForm"
+            model="AddRobotFormValidation"
+          >
+            <v-card>
+              <v-row
                 no-gutters
+                dense
               >
-                <v-row
+                <v-spacer />
+                <v-icon
+                  class="ma-3"
+                  @click="addRobotDialog = false"
+                >
+                  mdi-close-circle-outline
+                </v-icon>
+              </v-row>
+              <div
+                style="margin-left:3vw;margin-right:3vw"
+              >
+                <h1
+                  class="mb-8"
+                >
+                  Add robot
+                </h1>
+                <v-container
                   no-gutters
                 >
-                  <img
-                    style="border-radius: 12px"
-                    class="mb-4"
-                    width="100"
-                    height="100"
-                    src="@/static/robotexample.png"
+                  <v-row
+                    no-gutters
                   >
-                  <v-col
-                    class="ml-4"
-                  >
-                    <h3
-                      class="mb-2"
+                    <img
+                      style="border-radius: 12px"
+                      class="mb-4"
+                      width="100"
+                      height="100"
+                      :src="url ? url : require(`@/static/robotexample.png`)"
                     >
-                      Avatar
-                    </h3>
-                    <input id="file" type="file" class="inputfile">
-                    <label
-                      for="file"
+                    <v-col
+                      class="ml-4"
                     >
-                      <p
-                        class="mb-1"
-                        style="color:#4CAF50; cursor: pointer;"
-                        @click="upload"
+                      <h3
+                        class="mb-2"
                       >
-                        <v-icon
-                          color="green"
+                        Avatar
+                      </h3>
+                      <input
+                        id="file"
+                        type="file"
+                        class="inputfile"
+                        @change="onFileChange"
+                      >
+                      <label
+                        for="file"
+                      >
+                        <p
+                          class="mb-1"
+                          style="color:#4CAF50; cursor: pointer;"
                         >
-                          mdi-upload
-                        </v-icon>
-                        Upload
+                          <v-icon
+                            color="green"
+                          >
+                            mdi-upload
+                          </v-icon>
+                          Upload
+                        </p>
+                      </label>
+                      <p
+                        class="text-caption mb-1"
+                      >
+                        Format .png or .jpg
                       </p>
-                    </label>
-                    <p
-                      class="text-caption mb-1"
-                    >
-                      Format .png or .jpg
-                    </p>
-                    <p
-                      class="text-caption mb-1"
-                    >
-                      Max. size 5 MB
-                    </p>
-                  </v-col>
-                </v-row>
-              </v-container>
+                      <p
+                        class="text-caption mb-1"
+                      >
+                        Max. size 5 MB
+                      </p>
+                    </v-col>
+                  </v-row>
+                </v-container>
 
-              <v-col
-                class="pa-0"
-                cols="6"
-              >
-                <v-text-field
-                  v-model="addRobotData.name"
-                  label="Robot name"
+                <v-col
+                  class="pa-0"
+                  cols="6"
+                >
+                  <v-text-field
+                    v-model="addRobotData.name"
+                    label="Robot name"
+                    :rules="[v => !!v || 'You must agree to continue!']"
+                    hide-details
+                    dense
+                    outlined
+                    class="ml-0 pb-4 rounded-lg"
+                  />
+                </v-col>
+                <v-textarea
+                  v-model="addRobotData.description"
+                  rows="3"
+                  label="Description"
+                  required
                   hide-details
                   dense
                   outlined
                   class="ml-0 pb-4 rounded-lg"
                 />
-              </v-col>
-              <v-textarea
-                v-model="addRobotData.description"
-                rows="3"
-                label="Robot name"
-                hide-details
-                dense
-                outlined
-                class="ml-0 pb-4 rounded-lg"
-              />
-              <v-row
-                no-gutters
-                class="pa-0 pb-4"
-              >
-                <v-col
+                <v-row
                   no-gutters
-                  cols="12"
-                  md="4"
+                  class="pa-0 pb-4"
                 >
-                  <v-select
-                    v-model="addRobotData.exchange_id"
-                    label="Exchange"
-                    hide-details
-                    dense
-                    outlined
-                    single-line
-                    class="mx-2 rounded-lg"
-                    :items="['1', '2', '3']"
-                  />
-                </v-col>
-                <v-col
-                  cols="12"
-                  md="4"
-                >
-                  <v-autocomplete
-                    v-model="addRobotData.currency_id"
-                    label="Currency"
-                    hide-details
-                    dense
-                    outlined
-                    multiple
-                    single-line
-                    class="mx-2 rounded-lg"
-                    :items="items"
+                  <v-col
+                    no-gutters
+                    cols="12"
+                    md="4"
                   >
-                    <template
-                      #selection="{ item, index }"
+                    <v-select
+                      v-model="addRobotData.exchange"
+                      label="Exchange"
+                      :rules="[v => !!v || 'You must agree to continue!']"
+                      return-object
+                      required
+                      item-text="name"
+                      hide-details
+                      dense
+                      outlined
+                      single-line
+                      class="mx-2 rounded-lg"
+                      :items="addRobotData.exchangeItems"
+                    />
+                  </v-col>
+                  <v-col
+                    cols="12"
+                    md="4"
+                  >
+                    <v-autocomplete
+                      v-model="addRobotData.currency"
+                      label="Currency"
+                      return-object
+                      required
+                      :rules="[v => !!v || 'You must agree to continue!']"
+                      item-text="name"
+                      hide-details
+                      dense
+                      outlined
+                      single-line
+                      class="mx-2 rounded-lg"
+                      :items="addRobotData.currencyItems"
                     >
-                      <v-chip
-                        v-if="index <= 1"
+                      <template
+                        #selection="{ item, index }"
                       >
-                        <span>{{ item }}</span>
-                      </v-chip>
-                      <span
-                        v-if="index === 2"
-                        class="grey--text text-caption"
-                      >
-                        (+{{ items.length - 2 }} others)
-                      </span>
-                    </template>
-                  </v-autocomplete>
-                </v-col>
-                <v-col
-                  cols="12"
-                  md="4"
-                >
-                  <v-select
-                    v-model="addRobotData.timeframe_id"
-                    label="Timeframe"
-                    hide-details
-                    dense
-                    outlined
-                    single-line
-                    class="mx-2 rounded-lg"
-                    :items="['1', '2', '3']"
-                  />
-                </v-col>
-              </v-row>
-              <v-row no-gutters>
-                <v-checkbox
-                  v-model="addRobotData.sell"
+                        <v-chip
+                          v-if="index <= 1"
+                        >
+                          <span>{{ item.name }}</span>
+                        </v-chip>
+                        <span
+                          v-if="index === 2"
+                          class="grey--text text-caption"
+                        >
+                          (+{{ items.length - 2 }} others)
+                        </span>
+                      </template>
+                    </v-autocomplete>
+                  </v-col>
+                  <v-col
+                    cols="12"
+                    md="4"
+                  >
+                    <v-select
+                      v-model="addRobotData.timeframe"
+                      label="Timeframe"
+                      return-object
+                      :rules="[v => !!v || 'You must agree to continue!']"
+                      required
+                      item-text="name"
+                      hide-details
+                      dense
+                      outlined
+                      single-line
+                      class="mx-2 rounded-lg"
+                      :items="addRobotData.timeframeItems"
+                    />
+                  </v-col>
+                </v-row>
+                <v-row no-gutters>
+                  <v-checkbox
+                    v-model="addRobotData.sell"
+                    :rules="checkboxRules"
+                    color="primary"
+                    label="side Sell"
+                  >
+                    Sell
+                  </v-checkbox>
+                  <v-checkbox
+                    v-model="addRobotData.buy"
+                    :rules="checkboxRules"
+                    color="primary"
+                    class="pl-8"
+                    label="side Buy"
+                  >
+                    Buy
+                  </v-checkbox>
+                </v-row>
+                <v-btn
                   color="primary"
-                  label="side Sell"
+                  height="48px"
+                  width="170px"
+                  class="white--text mb-4"
+                  @click="addRobot"
                 >
-                  Sell
-                </v-checkbox>
-                <v-checkbox
-                  v-model="addRobotData.buy"
-                  color="primary"
-                  class="pl-8"
-                  label="side Buy"
-                >
-                  Buy
-                </v-checkbox>
-              </v-row>
-              <v-btn
-                color="primary"
-                height="48px"
-                width="170px"
-                class="white--text mb-4"
-                @click="addRobot"
-              >
-                Add robot
-              </v-btn>
-            </div>
-          </v-card>
+                  Add robot
+                </v-btn>
+              </div>
+            </v-card>
+          </v-form>
         </v-dialog>
       </div>
     </v-main>
@@ -226,31 +250,91 @@
 
 <script>
 import RobotsTable from '~/components/robotsTable.vue'
+import config from '@/config'
 
 export default {
   name: 'ArobotsFrontendAddedRobots',
   components: { RobotsTable },
   data () {
     return {
-      items: ['1', '2', '3'],
       addRobotDialog: false,
       addRobotData: {
         name: null,
         description: null,
-        exchange_id: null,
-        currency_id: null,
-        timeframe_id: null,
+        exchange: null,
+        exchangeItems: [],
+        currency: null,
+        currencyItems: [],
+        timeframe: null,
+        timeframeItems: [],
         sell: false,
         buy: false,
-        image_id: null
-      }
+        imageId: null,
+        file: null
+      },
+      url: null
+    }
+  },
+  computed: {
+    checkboxRules () {
+      return [
+        (this.addRobotData.buy || this.addRobotData.sell) === true || 'At least one item should be selected'
+      ]
     }
   },
   mounted () {
+    this.$axios.get(`${config.apiUrl}/currencies`).then((res) => {
+      console.log(res.data)
+      this.addRobotData.currencyItems = res.data
+    })
+    this.$axios.get(`${config.apiUrl}/exchanges`).then((res) => {
+      console.log(res.data)
+      this.addRobotData.exchangeItems = res.data
+    })
+    this.$axios.get(`${config.apiUrl}/timeframes`).then((res) => {
+      console.log(res.data)
+      this.addRobotData.timeframeItems = res.data
+    })
   },
   methods: {
     addRobot () {
-      this.addRobotDialog = true
+      if (this.$refs.addRobotForm.validate() === true) {
+        if (this.addRobotData.file) {
+          const formData = new FormData()
+          formData.append('file', this.addRobotData.file)
+          this.$axios.post(`${config.apiUrl}/images`, formData, {
+            headers: {
+              'Content-Type': 'multipart/form-data'
+            }
+          }).then((res) => {
+            this.addRobotData.imageId = res.data.id
+            const data = {
+              name: this.addRobotData.name,
+              description: this.addRobotData.description,
+              exchange_id: this.addRobotData.exchange.id,
+              currency_id: this.addRobotData.currency.id,
+              timeframe_id: this.addRobotData.timeframe.id,
+              sell: this.addRobotData.sell,
+              buy: this.addRobotData.buy,
+              image_id: this.addRobotData.imageId
+            }
+            console.log(data)
+            this.$axios.post(`${config.apiUrl}/robots`, data)
+              .catch((e) => {
+                console.log(e)
+                return false
+              })
+          })
+            .catch(() => {
+              return false
+            })
+        }
+      }
+    },
+    onFileChange (e) {
+      this.addRobotData.file = e.target.files[0]
+      this.url = URL.createObjectURL(this.addRobotData.file)
+      console.log(this.url)
     }
   }
 }

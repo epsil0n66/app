@@ -85,6 +85,7 @@ export const actions = {
         return Promise.reject(error)
       })
       commit('setToken', res.headers.authorization)
+      this.$axios.defaults.headers.Authorization = `${res.headers.authorization}`
       DefaultAPIInstance.defaults.headers.Authorization = `${res.headers.authorization}`
       if (res.headers.refresh) {
         commit('setRefreshToken', res.headers.refresh)
