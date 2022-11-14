@@ -21,7 +21,10 @@
               Add robot
             </v-btn>
           </v-row>
-          <RobotsTable />
+          <RobotsTable
+            :hide-footer="true"
+            :robots-table-data="robotsTableData"
+          />
         </v-card>
         <v-dialog
           v-model="addRobotDialog"
@@ -272,6 +275,7 @@ export default {
         imageId: null,
         file: null
       },
+      robotsTableData: [],
       url: null
     }
   },
@@ -284,21 +288,37 @@ export default {
   },
   mounted () {
     this.$axios.get(`${config.apiUrl}/currencies`).then((res) => {
-      console.log(res.data)
       this.addRobotData.currencyItems = res.data
     })
     this.$axios.get(`${config.apiUrl}/exchanges`).then((res) => {
-      console.log(res.data)
       this.addRobotData.exchangeItems = res.data
     })
     this.$axios.get(`${config.apiUrl}/timeframes`).then((res) => {
-      console.log(res.data)
       this.addRobotData.timeframeItems = res.data
     })
+    this.$axios.get(`${config.apiUrl}/user_robots`).then((res) => {
+      this.robotsTableData = res.data
+    })
+      .catch(() => {
+        this.$axios.get(`${config.apiUrl}/user_robots`).then((res) => {
+          this.robotsTableData = res.data
+        })
+      })
   },
   methods: {
     addRobot () {
       if (this.$refs.addRobotForm.validate() === true) {
+        const data = {
+          name: this.addRobotData.name,
+          exchange_id: this.addRobotData.exchange.id,
+          currency_id: this.addRobotData.currency.id,
+          timeframe_id: this.addRobotData.timeframe.id,
+          sell: this.addRobotData.sell,
+          buy: this.addRobotData.buy
+        }
+        if (this.addRobotData.description) {
+          data.description = this.addRobotData.description
+        }
         if (this.addRobotData.file) {
           const formData = new FormData()
           formData.append('file', this.addRobotData.file)
@@ -308,27 +328,27 @@ export default {
             }
           }).then((res) => {
             this.addRobotData.imageId = res.data.id
-            const data = {
-              name: this.addRobotData.name,
-              description: this.addRobotData.description,
-              exchange_id: this.addRobotData.exchange.id,
-              currency_id: this.addRobotData.currency.id,
-              timeframe_id: this.addRobotData.timeframe.id,
-              sell: this.addRobotData.sell,
-              buy: this.addRobotData.buy,
-              image_id: this.addRobotData.imageId
-            }
+            data.image_id = parseInt(res.data.id)
             console.log(data)
-            this.$axios.post(`${config.apiUrl}/robots`, data)
-              .catch((e) => {
-                console.log(e)
-                return false
-              })
           })
             .catch(() => {
+              setTimeout(() => {
+                this.$axios.post(`${config.apiUrl}/images`, formData, {
+                  headers: {
+                    'Content-Type': 'multipart/form-data'
+                  }
+                }).then((res) => {
+                  this.addRobotData.imageId = res.data.id
+                  data.image_id = res.data.id
+                  console.log(data)
+                  this.$axios.post(`${config.apiUrl}/robots`, data)
+                })
+              }, 300)
               return false
             })
         }
+        console.log(data)
+        this.$axios.post(`${config.apiUrl}/robots`, data)
       }
     },
     onFileChange (e) {

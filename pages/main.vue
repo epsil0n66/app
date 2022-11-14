@@ -168,8 +168,8 @@
           <v-pagination
             v-model="filters.page"
             class="my-8"
-            :length="100"
-            :total-visible="10"
+            :length="robotsTableTotalPages"
+            :total-visible="4"
           />
         </div>
       </v-card>
@@ -178,11 +178,8 @@
 </template>
 
 <script>
-import Vue from 'vue'
-import IconCrypto from 'vue-cryptocurrency-icons'
 import RobotsTable from '~/components/robotsTable.vue'
 import config from '@/config'
-Vue.use(IconCrypto)
 export default {
   name: 'ArobotsFrontendMain',
   components: { RobotsTable },
@@ -192,6 +189,8 @@ export default {
       demoRefreshToken: null,
       demoUserRole: null,
       robotsTableData: [],
+      robotsTableTotalRobots: 0,
+      robotsTableTotalPages: 1,
       filters: {
         filterQuery: '',
         search: null,
@@ -221,7 +220,9 @@ export default {
     this.Token = this.$store.getters.getToken
     this.RefreshToken = this.$store.getters.getRefreshToken
     this.$axios.get(`${config.apiUrl}/robots`).then((res) => {
-      this.robotsTableData = res.data
+      this.robotsTableData = res.data.robots
+      this.robotsTableTotalRobots = res.data.meta.robots_total
+      this.robotsTableTotalPages = Math.ceil(this.robotsTableTotalRobots / 25)
     })
     this.$axios.get(`${config.apiUrl}/currencies`).then((res) => {
       console.log(res.data)
@@ -254,7 +255,7 @@ export default {
       }
       this.filters.filteredChips = this.filters.currency
       this.$axios.get(`${config.apiUrl}/robots?${this.filters.filterQuery}`).then((res) => {
-        this.robotsTableData = res.data
+        this.robotsTableData = res.data.robots
       })
     },
     clearFilters () {

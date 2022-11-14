@@ -117,7 +117,11 @@ export const actions = {
   },
   async onRefresh ({ commit, getters }) {
     await AuthAPI.refresh(getters.getRefreshToken).then((res) => {
+      console.log(res.headers.authorization)
+      this.$axios.defaults.headers.Authorization = `${res.headers.authorization}`
+      DefaultAPIInstance.defaults.headers.Authorization = `${res.headers.authorization}`
       commit('setToken', res.headers.authorization)
+      return 'Done'
     })
   },
   async onProfile ({ commit }) {

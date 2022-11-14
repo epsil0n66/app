@@ -29,7 +29,7 @@
               <p
                 class="text-caption mb-1 text--secondary"
               >
-                {{ item.user_creator }}
+                {{ item.created_by.nickname }}
               </p>
             </v-col>
           </v-row>
@@ -207,6 +207,9 @@
 </template>
 
 <script>
+import Vue from 'vue'
+import IconCrypto from 'vue-cryptocurrency-icons'
+Vue.use(IconCrypto)
 export default {
   name: 'ArobotsFrontendAddedRobots',
   props: ['robotsTableData', 'hideFooter'],
