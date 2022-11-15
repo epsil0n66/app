@@ -25,7 +25,7 @@ export default {
       })
     } catch (e) {
       console.log(e)
-      this.$router.push('/main')
+      this.$router.push('/robots')
     }
   },
 

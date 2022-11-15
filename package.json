@@ -21,6 +21,7 @@
     "vue-cryptocurrency-icons": "^0.2.5",
     "vue-server-renderer": "^2.7.10",
     "vue-template-compiler": "^2.7.10",
+    "vue-trading-view": "^1.0.1",
     "vuetify": "^2.6.10"
   },
   "devDependencies": {

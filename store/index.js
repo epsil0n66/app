@@ -93,7 +93,7 @@ export const actions = {
       commit('setUserRole', 'registered')
       dispatch('onProfile')
       this.$router.push({
-        path: '/main'
+        path: '/robots'
       })
     })
   },
@@ -103,7 +103,7 @@ export const actions = {
       commit('setRefreshToken', res.headers.refresh)
       commit('setUserRole', 'registered')
       localStorage.setItem('userRole', 'registered')
-      this.$router.push({ path: '/main' })
+      this.$router.push({ path: '/robots' })
     })
   },
   async onPasswordChange ({ commit }, { email, recoveryToken }) {
@@ -112,7 +112,7 @@ export const actions = {
       commit('setRefreshToken', res.headers.refresh)
       commit('setUserRole', 'registered')
       localStorage.setItem('userRole', 'registered')
-      this.$router.push({ path: '/main' })
+      this.$router.push({ path: '/robots' })
     })
   },
   async onRefresh ({ commit, getters }) {

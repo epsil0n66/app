@@ -181,7 +181,7 @@
 import RobotsTable from '~/components/robotsTable.vue'
 import config from '@/config'
 export default {
-  name: 'ArobotsFrontendMain',
+  name: 'ArobotsFrontendRobots',
   components: { RobotsTable },
   data () {
     return {

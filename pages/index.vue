@@ -472,7 +472,7 @@ export default {
   beforeCreate () {
     if (this.$store.getters.getUserRole === 'registered') {
       this.$router.push({
-        path: '/main'
+        path: '/robots'
       })
     }
   },

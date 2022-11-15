@@ -12,6 +12,9 @@
   font-weight: 400;
 }
 $font-family:'Poppins';
+.v-sheet.v-card {
+  border-radius: 12px;
+}
 .v-application {
     [class*='text-'] {
       color: #36405a;

@@ -1,5 +1,51 @@
 <template>
   <v-app>
+    <div
+      v-if="pageAlert"
+      no-gutters
+      class="d-flex align-center"
+      style="height: 10vh; width: 100vw; background-color: #aaf7a3; position: fixed; z-index: 99999999; top: 0"
+      :style="[alertType === 'error' ? { 'background-color': '#f94449' } : { 'background-color': '#aaf7a3' }]"
+    >
+      <v-icon
+        v-if="alertType != 'error'"
+        color="#1AC200"
+        class="mr-2"
+        style="margin-left:10%;"
+      >
+        mdi-check-circle-outline
+      </v-icon>
+      <v-icon
+        v-if="alertType === 'error'"
+        color="white"
+        class="mr-2"
+        style="margin-left:10%;"
+      >
+        mdi-alert
+      </v-icon>
+      <p
+        v-if="alertType != 'error'"
+        class="ma-0"
+        style="color:#1AC200;"
+      >
+        Thanks!
+      </p>
+      <p
+        :class="[alertType === 'error' ? 'white--text' : '']"
+        class="pl-6 ma-0"
+      >
+        {{ pageAlertText }}
+      </p>
+      <v-spacer />
+      <v-icon
+        color="white"
+        float="right"
+        style="cursor:pointer; margin-right: 10vw;"
+        @click="pageAlert = false"
+      >
+        mdi-close-circle-outline
+      </v-icon>
+    </div>
     <v-main>
       <div>
         <v-card
@@ -176,23 +222,7 @@
                       single-line
                       class="mx-2 rounded-lg"
                       :items="addRobotData.currencyItems"
-                    >
-                      <template
-                        #selection="{ item, index }"
-                      >
-                        <v-chip
-                          v-if="index <= 1"
-                        >
-                          <span>{{ item.name }}</span>
-                        </v-chip>
-                        <span
-                          v-if="index === 2"
-                          class="grey--text text-caption"
-                        >
-                          (+{{ items.length - 2 }} others)
-                        </span>
-                      </template>
-                    </v-autocomplete>
+                    />
                   </v-col>
                   <v-col
                     cols="12"
@@ -204,14 +234,20 @@
                       return-object
                       :rules="[v => !!v || 'You must agree to continue!']"
                       required
-                      item-text="name"
                       hide-details
                       dense
                       outlined
                       single-line
                       class="mx-2 rounded-lg"
                       :items="addRobotData.timeframeItems"
-                    />
+                    >
+                      <template #selection="data">
+                        {{ data.item.time }}{{ data.item.name }}
+                      </template>
+                      <template #item="data">
+                        {{ data.item.time }}{{ data.item.name }}
+                      </template>
+                    </v-select>
                   </v-col>
                 </v-row>
                 <v-row no-gutters>
@@ -260,7 +296,10 @@ export default {
   components: { RobotsTable },
   data () {
     return {
+      pageAlert: false,
+      pageAlertText: null,
       addRobotDialog: false,
+      alertType: null,
       addRobotData: {
         name: null,
         description: null,
@@ -330,6 +369,7 @@ export default {
             this.addRobotData.imageId = res.data.id
             data.image_id = parseInt(res.data.id)
             console.log(data)
+            this.$axios.post(`${config.apiUrl}/robots`, data)
           })
             .catch(() => {
               setTimeout(() => {
@@ -342,13 +382,45 @@ export default {
                   data.image_id = res.data.id
                   console.log(data)
                   this.$axios.post(`${config.apiUrl}/robots`, data)
+                    .catch((e) => {
+                      this.pageAlert = true
+                      this.alertType = 'error'
+                      this.pageAlertText = e.response.data.errors.title
+                      setTimeout(() => {
+                        this.pageAlert = false
+                      }, 5000)
+                    })
                 })
               }, 300)
               return false
             })
+          return
         }
         console.log(data)
         this.$axios.post(`${config.apiUrl}/robots`, data)
+          .then(() => {
+            this.pageAlert = true
+            this.alertType = 'success'
+            this.pageAlertText = 'Robot created succesfully'
+            this.addRobotDialog = false
+            setTimeout(() => {
+              this.pageAlert = false
+            }, 5000)
+          })
+          .catch((e) => {
+            setTimeout(() => {
+              console.log(e.status)
+              this.$axios.post(`${config.apiUrl}/robots`, data)
+                .catch((e) => {
+                  this.pageAlert = true
+                  this.alertType = 'error'
+                  this.pageAlertText = e.response.data.errors.title
+                  setTimeout(() => {
+                    this.pageAlert = false
+                  }, 5000)
+                })
+            }, 300)
+          })
       }
     },
     onFileChange (e) {

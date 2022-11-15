@@ -13,7 +13,7 @@
         src="@/static/arobots.png"
         height="36px"
         style="cursor: pointer"
-        @click="$router.push('/main')"
+        @click="$router.push('/robots')"
       >
       <v-spacer />
       <button
@@ -206,7 +206,7 @@ export default {
     return {
       refresher: null,
       navLinks: [
-        { name: 'Trading Robots', to: '/main' },
+        { name: 'Trading Robots', to: '/robots' },
         { name: 'Referal', to: '/referal' },
         { name: 'About', to: '/about' },
         { name: 'API', to: '/api' }
