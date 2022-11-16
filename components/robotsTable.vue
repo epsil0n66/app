@@ -22,7 +22,9 @@
             >
             <v-col>
               <p
+                style="cursor:pointer"
                 class="text-md-body-1 mb-1 font-weight-bold"
+                @click="$router.push(`./robots/${item.id}`)"
               >
                 {{ item.name }}
               </p>

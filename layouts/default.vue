@@ -87,7 +87,9 @@
         </v-row>
       </v-col>
     </v-app-bar>
-    <v-main>
+    <v-main
+      style="background-image: url('_nuxt/static/background.png')"
+    >
       <Nuxt />
       <!-- <div class="ellipse1" style="pointer-events: none" />
       <div class="ellipse2" style="pointer-events: none" /> -->
