@@ -61,7 +61,7 @@
                 <v-list-item-title
                   v-show="role === 'registered'"
                   style="cursor:pointer;"
-                  @click="$router.push('/profile/addedrobots')"
+                  @click="$router.push('/profile/user_robots')"
                 >
                   Added robots
                 </v-list-item-title>
@@ -87,9 +87,7 @@
         </v-row>
       </v-col>
     </v-app-bar>
-    <v-main
-      style="background-image: url('_nuxt/static/background.png')"
-    >
+    <v-main>
       <Nuxt />
       <!-- <div class="ellipse1" style="pointer-events: none" />
       <div class="ellipse2" style="pointer-events: none" /> -->

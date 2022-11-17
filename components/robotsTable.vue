@@ -24,7 +24,7 @@
               <p
                 style="cursor:pointer"
                 class="text-md-body-1 mb-1 font-weight-bold"
-                @click="$router.push(`./robots/${item.id}`)"
+                @click="$router.push(`${robotsPath}/${item.id}`)"
               >
                 {{ item.name }}
               </p>
@@ -214,7 +214,7 @@ import IconCrypto from 'vue-cryptocurrency-icons'
 Vue.use(IconCrypto)
 export default {
   name: 'ArobotsFrontendAddedRobots',
-  props: ['robotsTableData', 'hideFooter'],
+  props: ['robotsTableData', 'hideFooter', 'robotsPath'],
   data () {
     return {
       robotsTableHeaders: [

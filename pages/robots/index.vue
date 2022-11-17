@@ -164,6 +164,7 @@
           <RobotsTable
             :hide-footer="true"
             :robots-table-data="robotsTableData"
+            :robots-path="'robots'"
           />
           <v-pagination
             v-model="filters.page"
