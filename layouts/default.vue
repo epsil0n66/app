@@ -17,7 +17,7 @@
       >
       <v-spacer />
       <button
-        v-for="(item, index) in navLinks"
+        v-for="(item, index) in navLinks[role]"
         :key="index"
         color="black"
         class="text-sm-body-2 text-lg-body-1"
@@ -205,12 +205,19 @@ export default {
   data () {
     return {
       refresher: null,
-      navLinks: [
-        { name: 'Trading Robots', to: '/robots' },
-        { name: 'Referal', to: '/referal' },
-        { name: 'About', to: '/about' },
-        { name: 'API', to: '/api' }
-      ],
+      navLinks: {
+        registered: [
+          { name: 'Trading Robots', to: '/robots' },
+          { name: 'Dashboard', to: '/profile/dashboard' },
+          { name: 'Rented Robots', to: '/profile/rented_robots' }
+        ],
+        guest: [
+          { name: 'Trading Robots', to: '/robots' },
+          { name: 'Referal', to: '/referal' },
+          { name: 'About', to: '/about' },
+          { name: 'API', to: '/api' }
+        ]
+      },
       currentURL: null
     }
   },
