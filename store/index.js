@@ -117,7 +117,6 @@ export const actions = {
   },
   async onRefresh ({ commit, getters }) {
     await AuthAPI.refresh(getters.getRefreshToken).then((res) => {
-      console.log(res.headers.authorization)
       this.$axios.defaults.headers.Authorization = `${res.headers.authorization}`
       DefaultAPIInstance.defaults.headers.Authorization = `${res.headers.authorization}`
       commit('setToken', res.headers.authorization)
@@ -126,7 +125,6 @@ export const actions = {
   },
   async onProfile ({ commit }) {
     await UserAPI.profile().then((res) => {
-      console.log(res.data)
       if (res.data.nickname) {
         commit('setUserNickname', res.data.nickname)
       } else {

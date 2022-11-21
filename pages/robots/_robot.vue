@@ -343,7 +343,19 @@
                   />
                   {{ robotData.data.exchange.name }}
                 </p>
-                <span><p style="font-weight:500">Trades: {{ robotData.data.worked_orders }} Time: {{ robotData.data.total_working_time.days }}D {{ robotData.data.total_working_time.hours }}H </p></span>
+                <span><p style="font-weight:500">Trades:
+                  <v-icon
+                    color="green"
+                  >
+                    mdi-swap-horizontal
+                  </v-icon>
+                  {{ robotData.data.worked_orders }} Time:
+                  <v-icon
+                    color="green"
+                  >
+                    mdi-clock-time-three-outline
+                  </v-icon>
+                  {{ robotData.data.total_working_time.days }}D {{ robotData.data.total_working_time.hours }}H </p></span>
                 <v-btn
                   class="white--text"
                   color="primary"
