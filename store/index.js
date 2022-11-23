@@ -20,12 +20,6 @@ export const getters = {
   },
   getRefreshToken (state) {
     return state.refreshToken
-  },
-  getAlertText (state) {
-    return state.alertText
-  },
-  getAlertType (state) {
-    return state.alertType
   }
 }
 
@@ -45,10 +39,6 @@ export const mutations = {
   setUserNickname (state, nickname) {
     state.nickname = nickname
     localStorage.setItem('nickname', nickname)
-  },
-  setAlert (state, alertText, alertType) {
-    state.alertText = alertText
-    state.alertType = alertType
   },
   deleteToken (state) {
     state.token = null

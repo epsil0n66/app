@@ -175,9 +175,9 @@
                 >
                   <v-slider
                     v-model="depositFormData.deposit"
-                    :tick-labels="['x1', 'x2', 'x3']"
-                    :max="600"
-                    step="300"
+                    :min="60"
+                    :max="900"
+                    step="60"
                     ticks="always"
                   />
                 </v-col>

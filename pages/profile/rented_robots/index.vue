@@ -59,7 +59,7 @@
             <v-spacer />
             <v-btn
               v-for="button in buttons"
-              :key="button"
+              :key="button.id"
               height="48px"
               width="150px"
               style="border-radius:12px ;"
@@ -74,7 +74,7 @@
           <RobotsTable
             :hide-footer="true"
             :robots-table-data="robotsTableData"
-            :robots-path="'user_robots'"
+            :robots-path="'rented_robots'"
           />
         </v-card>
       </div>
@@ -104,12 +104,12 @@ export default {
     }
   },
   mounted () {
-    this.$axios.get(`${config.apiUrl}/user_robots`).then((res) => {
-      this.robotsTableData = res.data
+    this.$axios.get(`${config.apiUrl}/rents?page=1`).then((res) => {
+      this.robotsTableData = res.data.map(el => el.robot)
     })
       .catch(() => {
-        this.$axios.get(`${config.apiUrl}/user_robots`).then((res) => {
-          this.robotsTableData = res.data
+        this.$axios.get(`${config.apiUrl}/rents?page=1`).then((res) => {
+          this.robotsTableData = res.data.map(el => el.robot)
         })
       })
   },

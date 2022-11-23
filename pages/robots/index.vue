@@ -5,6 +5,7 @@
       <v-card
         flat
         style="margin-left: 7.3vw; margin-right: 7.3vw;"
+        class="main-card"
       >
         <h1>
           Arobots
@@ -160,6 +161,7 @@
         </v-card>
         <div
           style="z-index: 1; position:relative"
+          width="90vw"
         >
           <RobotsTable
             :hide-footer="true"
@@ -274,7 +276,12 @@ export default {
 <style>
 
 .v-chip.v-size--default {
-    border-radius: 12px;
+  border-radius: 12px;
 }
-
+.main-card.v-card.v-card--flat.v-sheet.theme--light {
+  background-color: transparent;
+}
+.v-data-table-header {
+  width: 90vw;
+}
 </style>
