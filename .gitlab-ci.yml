@@ -10,5 +10,5 @@ step-deploy-prod:
   stage: deploy
   script:
     - docker build -t app/arobots-frontend-rails .
-    - docker run -d -p 443:80 --rm --name arobots-frontend app/evo-frontend-rails
+    - docker run -d -p 443:80 --rm --name arobots-frontend app/arobots-frontend-rails
 
