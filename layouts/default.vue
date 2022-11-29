@@ -89,7 +89,8 @@
     </v-app-bar>
     <v-main>
       <Nuxt
-      style="background-image: url(_nuxt/static/background.png);" />
+        style="background-image: url('/background.png')"
+      />
       <!-- <div class="ellipse1" style="pointer-events: none" />
       <div class="ellipse2" style="pointer-events: none" /> -->
     </v-main>
@@ -240,15 +241,13 @@ export default {
       console.log(newNickname, oldNickname)
     }
   },
-  beforeCreate () {
-    if (!this.$axios.defaults.headers.Authorization) {
-      this.$axios.defaults.headers.Authorization = this.$store.getters.getToken
-    }
-  },
   beforeMount () {
     this.currentURL = document.URL
   },
   mounted () {
+    if (!this.$axios.defaults.headers.Authorization && this.role === 'regisered') {
+      this.$axios.defaults.headers.Authorization = this.$store.getters.getToken
+    }
     console.log(this.$store.getters.getUserNickname)
   },
   destroyed () {

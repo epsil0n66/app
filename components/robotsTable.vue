@@ -1,5 +1,8 @@
 <template>
   <div>
+    <RentRobot
+      ref="rent"
+    />
     <v-data-table
       :headers="robotsTableHeaders"
       :items="robotsTableData"
@@ -31,7 +34,7 @@
               <p
                 class="text-caption mb-1 text--secondary"
               >
-                {{ item.created_by.nickname }}
+                {{ item.creator.nickname }}
               </p>
             </v-col>
           </v-row>
@@ -180,6 +183,7 @@
             width="5.5vw"
             style="border-radius:12px ;"
             outlined
+            @click="rent(item.id, item.exchange.id)"
           >
             Rent
           </v-btn>
@@ -211,9 +215,11 @@
 <script>
 import Vue from 'vue'
 import IconCrypto from 'vue-cryptocurrency-icons'
+import RentRobot from './rentRobot.vue'
 Vue.use(IconCrypto)
 export default {
   name: 'ArobotsFrontendAddedRobots',
+  components: { RentRobot },
   props: ['robotsTableData', 'hideFooter', 'robotsPath'],
   data () {
     return {
@@ -255,13 +261,12 @@ export default {
       ]
     }
   },
-
   mounted () {
-
   },
-
   methods: {
-
+    rent (robotID, exchangeID) {
+      this.$refs.rent.checkKey(robotID, exchangeID)
+    }
   }
 }
 </script>

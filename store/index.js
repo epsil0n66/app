@@ -127,6 +127,7 @@ export const actions = {
     commit('deleteRefreshToken')
     commit('deleteUserRole')
     commit('deleteUserNickname')
+    delete this.$axios.defaults.headers.Authorization
     delete DefaultAPIInstance.defaults.headers.Authorization
     DefaultAPIInstance.interceptors.response.eject()
   }
