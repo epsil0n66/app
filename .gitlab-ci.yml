@@ -1,14 +1,31 @@
 stages:
-- release
+- build
 - deploy
 
 image: docker
 services:
   - docker:dind
 
-step-deploy-prod:
-  stage: deploy
-  script:
-    - docker build -t app/arobots-frontend-rails .
-    - docker run -d -p 443:80 --rm --name arobots-frontend app/arobots-frontend-rails
+image: docker:latest
 
+variables:
+  DOCKER_DRIVER: overlay2
+  CI_REGISTRY: registry.gitlab.com/ooo-evo/arobots/arobots-frontend-vue
+
+build:
+  stage: build
+  before_script: 
+    - docker logout $CI_REGISTRY
+    - docker login -u $REGISTRY_USERNAME -p $DEPLOY_TOKEN $CI_REGISTRY
+  script:
+    - docker build -t $CI_REGISTRY .
+    - docker push $CI_REGISTRY
+
+deploy:
+  stage: deploy
+  before_script:
+    - docker stop  arobots-frontend || true
+  script:
+    - docker login -u ${REGISTRY_USERNAME} -p ${DEPLOY_TOKEN} ${CI_REGISTRY};
+    - docker pull $CI_REGISTRY;
+    - docker run -d -p 443:80 --rm --name arobots-frontend app/arobots-frontend
