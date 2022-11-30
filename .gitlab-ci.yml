@@ -18,7 +18,7 @@ build:
     #- docker logout $CI_REGISTRY
     #- docker login -u $REGISTRY_USERNAME -p $DEPLOY_TOKEN $CI_REGISTRY
   script:
-    - docker build -t $CI_REGISTRY .
+    #- docker build -t $CI_REGISTRY .
     #- docker push $CI_REGISTRY
 
 deploy:
@@ -28,4 +28,5 @@ deploy:
   script:
     #- docker login -u ${REGISTRY_USERNAME} -p ${DEPLOY_TOKEN} ${CI_REGISTRY};
     #- docker pull $CI_REGISTRY;
+    - docker build -t $CI_REGISTRY .
     - docker run -d -p 443:80 --rm --name arobots-frontend app/arobots-frontend
