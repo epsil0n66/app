@@ -514,6 +514,7 @@ export default {
             this.pageAlert = true
           })
           .catch((e) => {
+            console.log(e.response)
             this.pageAlertText = e.response.data.errors.title
             this.alertType = 'error'
             this.pageAlert = true

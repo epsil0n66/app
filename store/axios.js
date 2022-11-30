@@ -8,6 +8,7 @@ export default function ({ $axios, redirect, store }) {
   // })
 
   $axios.onError(async (error) => {
+    console.log(error.response)
     const code = parseInt(error.response && error.response.status)
     if (code === 400) {
       redirect('/400')
@@ -23,5 +24,6 @@ export default function ({ $axios, redirect, store }) {
           redirect('/')
         })
     }
+    return Promise.reject(error)
   })
 }
