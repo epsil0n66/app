@@ -312,19 +312,12 @@ export default {
       this.$axios(`${config.apiUrl}/user/profile/exchange_secret?robot_id=${this.depositFormData.robotID}`)
         .then((res) => {
           console.log(res.data)
-          if (typeof res.status.data === 'object') {
-            if (Object.keys(res.status.data).length === 0) {
-              this.rentDepositDialog = true
-            } else {
-              this.rentKeyDialog = true
-            }
-          }
+          this.rentDepositDialog = true
         })
-        .catch(function (e) {
-          console.log(e)
-          this.pageAlertText = e.response.data.errors.title
-          this.alertType = 'error'
-          this.pageAlert = true
+        .catch((e) => {
+          if (e.response.status === 422) {
+            this.rentKeyDialog = true
+          }
         })
     },
     addKey () {
@@ -367,7 +360,7 @@ export default {
             this.pageAlert = true
           })
           .catch((e) => {
-            console.log(JSON.stringify(e.response))
+            console.log(e.response)
             this.pageAlertText = e.response.data.errors.title
             this.alertType = 'error'
             this.pageAlert = true

@@ -4,7 +4,7 @@
       v-if="pageAlert"
       no-gutters
       class="d-flex align-center"
-      style="height: 10vh; width: 100vw; background-color: #aaf7a3; position: fixed; z-index: 10; top: 0"
+      style="height: 10vh; width: 100vw; background-color: #aaf7a3; position: fixed; z-index: 9999; top: 0"
       :style="[alertType === 'error' ? { 'background-color': '#f94449' } : { 'background-color': '#aaf7a3' }]"
     >
       <v-icon
