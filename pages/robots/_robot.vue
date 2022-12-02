@@ -404,15 +404,7 @@
                   </p>
                 </div>
               </v-row>
-              <VueTradingView
-                class="mb-6"
-                :options="{
-                  symbol: 'BTCUSD',
-                  width: '700',
-                  height: '400',
-                  theme: 'light'
-                }"
-              />
+              <twLightCharts />
             </v-col>
           </v-row>
           <v-row>
@@ -430,15 +422,15 @@
 </template>
 
 <script>
-import VueTradingView from 'vue-trading-view'
 import Vue from 'vue'
 import IconCrypto from 'vue-cryptocurrency-icons'
 import config from '@/config'
+import twLightCharts from '~/components/twLightCharts.vue'
 Vue.use(IconCrypto)
 
 export default {
   components: {
-    VueTradingView
+    twLightCharts
   },
   async asyncData ({ params, $axios }) {
     const robotData = await $axios.get(`${config.apiUrl}/robots/${params.robot}`)

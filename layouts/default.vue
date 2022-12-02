@@ -245,17 +245,12 @@ export default {
     this.currentURL = document.URL
   },
   mounted () {
-    if (!this.$axios.defaults.headers.Authorization && this.role === 'regisered') {
-      this.$axios.defaults.headers.Authorization = this.$store.getters.getToken
-    }
-    console.log(this.$store.getters.getUserNickname)
   },
   destroyed () {
   },
   methods: {
     signOut () {
       this.$store.dispatch('onSignOut')
-      console.log(this.$store.getters.getUserRole)
       this.$router.push({
         path: '/'
       })

@@ -4,7 +4,7 @@ import { DefaultAPIInstance } from '@/api'
 export const state = () => ({
   token: localStorage.getItem('token') || null,
   refreshToken: localStorage.getItem('refreshToken') || null,
-  userRole: localStorage.getItem('userRole') || null,
+  userRole: localStorage.getItem('userRole') || 'guest',
   nickname: localStorage.getItem('nickname') || null
 })
 
