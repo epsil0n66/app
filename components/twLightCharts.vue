@@ -41,20 +41,20 @@ export default {
     }
     const maxPriceLine = {
       price: 1280,
-      color: 'black',
+      color: 'red',
       lineWidth: 2,
       lineStyle: 2, // LineStyle.Dashed
       axisLabelVisible: true,
-      title: 'Я цена'
+      title: 'Price'
     }
     candlestickSeries.createPriceLine(maxPriceLine)
     const markers = [
       {
         time: Date.now() / 1000,
         position: 'aboveBar',
-        color: '#f68410',
+        color: 'green',
         shape: 'circle',
-        text: 'Я маркер'
+        text: 'Marker'
       }
     ]
     candlestickSeries.setMarkers(markers)

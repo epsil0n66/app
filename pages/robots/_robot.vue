@@ -389,18 +389,25 @@
                 </v-icon>
                 <div
                   class="ma-0 px-2 py-2 mx-6 d-flex justify-center align-start"
-                  style="border-radius: 16px;width: fit-content; border: solid 1px green"
+                  style="border-radius: 16px;width: fit-content"
+                  :style="[robotData.data.online ? { 'border': 'solid 1px green' } : { 'border': 'solid 1px red' }]"
                 >
                   <v-icon
                     class="mr-2"
-                    color="green"
+                    :color="robotData.data.online ? 'green': 'red' "
                   >
                     mdi-circle
                   </v-icon>
                   <p
                     class="ma-0 text-body-2"
+                    v-if="robotData.data.online"
                   >
                     Online
+                  </p>
+                  <p
+                  class="ma-0 text-body-2"
+                  v-else>
+                    Offline
                   </p>
                 </div>
               </v-row>
