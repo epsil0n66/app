@@ -1,7 +1,9 @@
 <template>
   <div>
-    <div :id="chartID"
-    class="twchart"  />
+    <div
+      :id="chartID"
+      class="twchart"
+    />
   </div>
 </template>
 
@@ -37,6 +39,25 @@ export default {
       const a = JSON.parse(event.data).k
       candlestickSeries.update({ time: a.t / 1000, open: parseFloat(a.o), high: parseFloat(a.h), low: parseFloat(a.l), close: parseFloat(a.c) })
     }
+    const maxPriceLine = {
+      price: 1280,
+      color: 'black',
+      lineWidth: 2,
+      lineStyle: 2, // LineStyle.Dashed
+      axisLabelVisible: true,
+      title: 'Я цена'
+    }
+    candlestickSeries.createPriceLine(maxPriceLine)
+    const markers = [
+      {
+        time: Date.now() / 1000,
+        position: 'aboveBar',
+        color: '#f68410',
+        shape: 'circle',
+        text: 'Я маркер'
+      }
+    ]
+    candlestickSeries.setMarkers(markers)
   },
   methods: {
   }
