@@ -399,14 +399,15 @@
                     mdi-circle
                   </v-icon>
                   <p
-                    class="ma-0 text-body-2"
                     v-if="robotData.data.online"
+                    class="ma-0 text-body-2"
                   >
                     Online
                   </p>
                   <p
-                  class="ma-0 text-body-2"
-                  v-else>
+                    v-else
+                    class="ma-0 text-body-2"
+                  >
                     Offline
                   </p>
                 </div>

@@ -26,8 +26,10 @@ export default {
           secondsVisible: false
         }
       })
+    const instance = this.$axios.create()
+    delete instance.defaults.headers.Authorization
     const candlestickSeries = chart.addCandlestickSeries()
-    this.$axios('https://www.binance.com/api/v3/uiKlines?symbol=ETHBUSD&interval=1m&limit=1000')
+    instance('https://www.binance.com/api/v3/uiKlines?symbol=ETHBUSD&interval=1m&limit=1000')
       .then((res) => {
         candlestickSeries.setData(res.data.map((a) => {
           return { time: a[0] / 1000, open: parseFloat(a[1]), high: parseFloat(a[2]), low: parseFloat(a[3]), close: parseFloat(a[4]) }

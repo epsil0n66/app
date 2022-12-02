@@ -291,30 +291,30 @@
                 </v-icon>
                 <div
                   class="ma-0 px-2 py-2 mx-6 d-flex justify-center align-start"
-                  style="border-radius: 16px;width: fit-content; border: solid 1px green"
+                  style="border-radius: 16px;width: fit-content"
+                  :style="[robotData.data.online ? { 'border': 'solid 1px green' } : { 'border': 'solid 1px red' }]"
                 >
                   <v-icon
                     class="mr-2"
-                    color="green"
+                    :color="robotData.data.online ? 'green': 'red' "
                   >
                     mdi-circle
                   </v-icon>
                   <p
+                    v-if="robotData.data.online"
                     class="ma-0 text-body-2"
                   >
                     Online
                   </p>
+                  <p
+                    v-else
+                    class="ma-0 text-body-2"
+                  >
+                    Offline
+                  </p>
                 </div>
               </v-row>
-              <VueTradingView
-                class="mb-6"
-                :options="{
-                  symbol: 'BTCUSD',
-                  width: '700',
-                  height: '400',
-                  theme: 'light'
-                }"
-              />
+              <twLightCharts />
             </v-col>
           </v-row>
           <v-row>
@@ -332,7 +332,6 @@
 </template>
 
 <script>
-import VueTradingView from 'vue-trading-view'
 import Vue from 'vue'
 import IconCrypto from 'vue-cryptocurrency-icons'
 import config from '@/config'
@@ -340,10 +339,12 @@ Vue.use(IconCrypto)
 
 export default {
   components: {
-    VueTradingView
   },
   async asyncData ({ params, $axios }) {
     let robotData = await $axios.get(`${config.apiUrl}/user_robots/${params.robot}`)
+      .catch(() => {
+        console.log('error')
+      })
     if (!robotData) {
       robotData = await $axios.get(`${config.apiUrl}/user_robots/${params.robot}`)
     }
