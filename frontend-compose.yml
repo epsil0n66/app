@@ -10,4 +10,9 @@ services:
     volumes:
       - /etc/letsencrypt/live/arobots.evospb.ru/fullchain.pem:/etc/letsencrypt/live/arobots.evospb.ru/fullchain.pem
       - /etc/letsencrypt/live/arobots.evospb.ru/privkey.pem:/etc/letsencrypt/live/arobots.evospb.ru/privkey.pem
-
+  restart: unless-stopped
+    networks:
+      - default
+    extra_hosts:
+      - "host.internal:host-gateway"
+      
