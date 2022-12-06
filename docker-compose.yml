@@ -1,0 +1,10 @@
+version: '3.6'
+services:
+  arobots-frontend-vue:
+    image: registry.gitlab.com/ooo-evo/arobots/arobots-frontend-vue:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "443:443"
+
