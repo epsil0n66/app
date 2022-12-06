@@ -17,13 +17,6 @@ build:
   before_script: 
     - docker logout $CI_REGISTRY
     - docker login -u $REGISTRY_USERNAME -p $DEPLOY_TOKEN $CI_REGISTRY
-  only:
-    refs: ['branches']
-    changes:
-      - .gitlab-ci.yml
-      - Dockerfile
-      - frontend-compose.yml
-  except: ['main', 'dev']
   script:
     - docker build -t $CI_REGISTRY .
     - docker push $CI_REGISTRY
