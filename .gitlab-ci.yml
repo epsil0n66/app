@@ -12,21 +12,20 @@ variables:
   DOCKER_DRIVER: overlay2
   CI_REGISTRY: registry.gitlab.com/ooo-evo/arobots/arobots-frontend-vue
 
-#build:
-#  stage: build
-#  before_script: 
-#    - docker logout $CI_REGISTRY
-#    - docker login -u $REGISTRY_USERNAME -p $DEPLOY_TOKEN $CI_REGISTRY
-#  script:
-#    - docker build -t $CI_REGISTRY .
-#    - docker push $CI_REGISTRY
+build:
+  stage: build
+  before_script: 
+    - docker logout $CI_REGISTRY
+    - docker login -u $REGISTRY_USERNAME -p $DEPLOY_TOKEN $CI_REGISTRY
+  script:
+    - docker build -t $CI_REGISTRY .
+    - docker push $CI_REGISTRY
 
 deploy:
   stage: deploy
   before_script:
     - docker stop  arobots-frontend || true
   script:
-    #- docker login -u ${REGISTRY_USERNAME} -p ${DEPLOY_TOKEN} ${CI_REGISTRY};
-    #- docker pull $CI_REGISTRY;
-    - docker build -t app/arobots-frontend  .
-    - docker run -d -p 443:80 --rm --name arobots-frontend app/arobots-frontend
+    - docker login -u ${REGISTRY_USERNAME} -p ${DEPLOY_TOKEN} ${CI_REGISTRY};
+    - docker pull $CI_REGISTRY;
+    - docker run -d -p 443:443 --rm --name arobots-frontend $CI_REGISTRY
