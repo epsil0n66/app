@@ -412,6 +412,10 @@
                   </p>
                 </div>
               </v-row>
+              <v-row
+                class="mt-6 mb-3 justify-end align-end"
+              >
+              </v-row>
               <twLightCharts />
             </v-col>
           </v-row>

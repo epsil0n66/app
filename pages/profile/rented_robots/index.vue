@@ -50,7 +50,7 @@
       <div>
         <v-card
           flat
-          style="margin-left: 8vw; margin-right: 8vw;"
+          style="margin-left: 8vw; margin-right: 8vw; background-color: transparent;"
         >
           <v-row
             no-gutters

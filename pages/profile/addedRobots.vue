@@ -201,7 +201,7 @@
                       dense
                       outlined
                       single-line
-                      class="mx-2 rounded-lg"
+                      class="rounded-lg"
                       :items="addRobotData.exchangeItems"
                     />
                   </v-col>
@@ -238,7 +238,7 @@
                       dense
                       outlined
                       single-line
-                      class="mx-2 rounded-lg"
+                      class="ml-2 rounded-lg"
                       :items="addRobotData.timeframeItems"
                     >
                       <template #selection="data">

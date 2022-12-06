@@ -50,7 +50,7 @@
       <div>
         <v-card
           flat
-          style="margin-left: 8vw; margin-right: 8vw;"
+          style="margin-left: 8vw; margin-right: 8vw; background-color: transparent;"
         >
           <v-row
             no-gutters
@@ -202,7 +202,7 @@
                       dense
                       outlined
                       single-line
-                      class="mx-2 rounded-lg"
+                      class="mr-2 rounded-lg"
                       :items="addRobotData.exchangeItems"
                     />
                   </v-col>
@@ -239,7 +239,7 @@
                       dense
                       outlined
                       single-line
-                      class="mx-2 rounded-lg"
+                      class="ml-2 rounded-lg"
                       :items="addRobotData.timeframeItems"
                     >
                       <template #selection="data">
