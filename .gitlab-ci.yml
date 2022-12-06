@@ -24,7 +24,8 @@ build:
 deploy:
   stage: deploy
   before_script:
-    - docker-compose down
+    - docker logout $CI_REGISTRY
+    - docker login -u $REGISTRY_USERNAME -p $DEPLOY_TOKEN $CI_REGISTRY
   script:
-    - docker-compose build
-    - docker-compose up -d 
+    - docker-compose -f frontend-compose.yml down
+    - docker-compose -f frontend-compose.yml up -d 
