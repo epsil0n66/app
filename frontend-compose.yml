@@ -1,0 +1,16 @@
+version: '3.6'
+services:
+  arobots-frontend-vue:
+    image: registry.gitlab.com/ooo-evo/arobots/arobots-frontend-vue:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "443:443"
+    volumes:
+      - /etc/letsencrypt/live/arobots.evospb.ru/fullchain.pem:/etc/letsencrypt/live/arobots.evospb.ru/fullchain.pem
+      - /etc/letsencrypt/live/arobots.evospb.ru/privkey.pem:/etc/letsencrypt/live/arobots.evospb.ru/privkey.pem
+    restart: unless-stopped
+    extra_hosts:
+      - "host.internal:host-gateway"
+      
