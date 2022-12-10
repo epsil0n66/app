@@ -1,3 +1,3 @@
 export default {
-  apiUrl: 'http://arobots.evospb.ru/api'
+  apiUrl: 'https://arobots.evospb.ru/api'
 }

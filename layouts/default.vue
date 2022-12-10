@@ -234,6 +234,9 @@ export default {
     }
   },
   watch: {
+    $route (to, from) {
+      this.currentURL = to.path
+    },
     role (newRole, oldRole) {
       console.log(newRole, oldRole)
     },
