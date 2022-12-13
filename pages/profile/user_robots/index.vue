@@ -339,10 +339,12 @@ export default {
     this.$axios.get(`${config.apiUrl}/user_robots`).then((res) => {
       this.robotsTableData = res.data
     })
-      .catch(() => {
-        this.$axios.get(`${config.apiUrl}/user_robots`).then((res) => {
-          this.robotsTableData = res.data
-        })
+      .catch((e) => {
+        if (e.response.status === 401) {
+          this.$axios.get(`${config.apiUrl}/user_robots`).then((res) => {
+            this.robotsTableData = res.data
+          })
+        }
       })
   },
   methods: {

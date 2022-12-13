@@ -109,10 +109,12 @@ export default {
     this.$axios.get(`${config.apiUrl}/rents?page=1`).then((res) => {
       this.robotsTableData = res.data.map(el => el.robot)
     })
-      .catch(() => {
-        this.$axios.get(`${config.apiUrl}/rents?page=1`).then((res) => {
-          this.robotsTableData = res.data.map(el => el.robot)
-        })
+      .catch((e) => {
+        if (e.response.status === 401) {
+          this.$axios.get(`${config.apiUrl}/rents?page=1`).then((res) => {
+            this.robotsTableData = res.data.map(el => el.robot)
+          })
+        }
       })
   },
   methods: {

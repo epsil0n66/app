@@ -191,6 +191,7 @@
             small
             class="ml-2"
             color="green"
+            @click="favorite(item.id)"
           >
             mdi-star-outline
           </v-icon>
@@ -266,6 +267,9 @@ export default {
   methods: {
     rent (robotID, exchangeID) {
       this.$refs.rent.checkKey(robotID, exchangeID)
+    },
+    favorite (robotID) {
+      this.$refs.rent.favorite(robotID)
     }
   }
 }

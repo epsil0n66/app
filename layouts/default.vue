@@ -36,6 +36,13 @@
           justify="center"
           align="center"
         >
+          <v-icon
+            v-show="role === 'registered'"
+            class="mx-2"
+            @click="$router.push('/profile/favorites')"
+          >
+            mdi-star
+          </v-icon>
           <v-avatar
             v-show="role === 'registered'"
             size="36"
@@ -87,7 +94,9 @@
         </v-row>
       </v-col>
     </v-app-bar>
-    <v-main>
+    <v-main
+      style="background-image: url('/background.png')"
+    >
       <Nuxt
         style="background-image: url('/background.png')"
       />

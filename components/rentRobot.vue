@@ -369,6 +369,9 @@ export default {
             }, 5000)
           })
       }
+    },
+    favorite (robotID) {
+      this.$axios.put(`${config.apiUrl}/rents/${robotID}/favorite`)
     }
   }
 }

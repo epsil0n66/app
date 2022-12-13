@@ -11,11 +11,17 @@
         >
           <template #activator="{ attrs, on }">
             <v-btn
-              class="ma-2"
+              class="my-2 ml-10 text--black"
+              style="border-radius: 0px"
+              elevation="1"
               v-bind="attrs"
               v-on="on"
             >
-              {{ currentInterval.time + currentInterval.name }}
+              <span
+                style="color:black"
+              >
+                {{ currentInterval.time + currentInterval.name }}
+              </span>
             </v-btn>
           </template>
           <v-list
@@ -35,11 +41,17 @@
         >
           <template #activator="{ attrs, on }">
             <v-btn
-              class="ma-2"
+              class="my-2"
+              style="border-radius: 0px"
+              elevation="1"
               v-bind="attrs"
               v-on="on"
             >
-              {{ currentSeries.name }}
+              <v-icon
+                color="black"
+              >
+                {{ currentSeries.icon }}
+              </v-icon>
             </v-btn>
           </template>
           <v-list
@@ -55,17 +67,43 @@
           </v-list>
         </v-menu>
         <v-btn
-          class="ma-2"
+          class="my-2"
+          style="border-radius: 0px"
+          elevation="1"
           @click="enterFullscreen"
         >
-          Enter fullscreen
+          <v-icon
+            color="black"
+          >
+            mdi-fullscreen
+          </v-icon>
         </v-btn>
-        <v-btn
-          class="ma-2"
-          @click="takeScreenshot"
+        <v-menu
+          top
         >
-          Take screenshot
-        </v-btn>
+          <template #activator="{ on, attrs }">
+            <v-btn
+              class="my-2"
+              v-bind="attrs"
+              style="border-radius: 0px"
+              elevation="1"
+              v-on="on"
+              @click="takeScreenshot"
+            >
+              <v-icon
+                color="black"
+              >
+                mdi-camera
+              </v-icon>
+            </v-btn>
+          </template>
+          <v-alert
+            class="ma-0"
+            type="success"
+          >
+            Copied to clipboard
+          </v-alert>
+        </v-menu>
       </v-row>
       <div
         :id="chartID"
@@ -93,14 +131,15 @@ export default {
       intervalMenu: [],
       currentInterval: { time: '1', name: 'm' },
       seriesMenu: [
-        { name: 'Candlestick', id: 0 },
-        { name: 'Bar', id: 1 },
-        { name: 'Line', id: 2 }
+        { name: 'Candlestick', id: 0, icon: 'mdi-chart-bar' },
+        { name: 'Bar', id: 1, icon: 'mdi-chart-bar-stacked' },
+        { name: 'Line', id: 2, icon: 'mdi-chart-areaspline-variant' }
       ],
-      currentSeries: { name: 'Candlestick', id: 0 },
+      currentSeries: { name: 'Candlestick', icon: 'mdi-chart-bar', id: 0 },
       chartData: null,
       lineData: null,
-      timer: null
+      timer: null,
+      tooltip: false
     }
   },
   watch: {
@@ -116,7 +155,7 @@ export default {
   mounted () {
     instance = this.$axios.create()
     delete instance.defaults.headers.Authorization
-    instance('http://arobots.evospb.ru/api/timeframes')
+    instance('https://arobots.evospb.ru/api/timeframes')
       .then((res) => {
         this.intervalMenu = res.data
       })

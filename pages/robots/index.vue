@@ -227,12 +227,14 @@ export default {
       this.robotsTableTotalRobots = res.data.meta.robots_total
       this.robotsTableTotalPages = Math.ceil(this.robotsTableTotalRobots / 25)
     })
-      .catch(() => {
-        this.$axios.get(`${config.apiUrl}/robots`).then((res) => {
-          this.robotsTableData = res.data.robots
-          this.robotsTableTotalRobots = res.data.meta.robots_total
-          this.robotsTableTotalPages = Math.ceil(this.robotsTableTotalRobots / 25)
-        })
+      .catch((e) => {
+        if (e.response.status === 401) {
+          this.$axios.get(`${config.apiUrl}/robots`).then((res) => {
+            this.robotsTableData = res.data.robots
+            this.robotsTableTotalRobots = res.data.meta.robots_total
+            this.robotsTableTotalPages = Math.ceil(this.robotsTableTotalRobots / 25)
+          })
+        }
       })
     this.$axios.get(`${config.apiUrl}/currencies`).then((res) => {
       console.log(res.data)
