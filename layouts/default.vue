@@ -253,6 +253,12 @@ export default {
       console.log(newNickname, oldNickname)
     }
   },
+  beforeCreate () {
+    const role = this.$store.getters.getUserRole
+    if (role === 'registered') {
+      this.$store.dispatch('onRefresh')
+    }
+  },
   beforeMount () {
     this.currentURL = document.URL
   },

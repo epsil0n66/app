@@ -188,10 +188,20 @@
             Rent
           </v-btn>
           <v-icon
+            v-if="item.favorite"
             small
             class="ml-2"
             color="green"
-            @click="favorite(item.id)"
+            @click="favorite(item)"
+          >
+            mdi-star
+          </v-icon>
+          <v-icon
+            v-else
+            small
+            class="ml-2"
+            color="green"
+            @click="favorite(item)"
           >
             mdi-star-outline
           </v-icon>
@@ -217,6 +227,7 @@
 import Vue from 'vue'
 import IconCrypto from 'vue-cryptocurrency-icons'
 import RentRobot from './rentRobot.vue'
+import config from '@/config'
 Vue.use(IconCrypto)
 export default {
   name: 'ArobotsFrontendAddedRobots',
@@ -268,8 +279,19 @@ export default {
     rent (robotID, exchangeID) {
       this.$refs.rent.checkKey(robotID, exchangeID)
     },
-    favorite (robotID) {
-      this.$refs.rent.favorite(robotID)
+    favorite (robot) {
+      console.log(robot)
+      if (robot.favorite === false) {
+        this.$axios.post(`${config.apiUrl}/favorites`, { robot_id: robot.id })
+          .then(() => {
+            robot.favorite = !robot.favorite
+          })
+      } else {
+        this.$axios.delete(`${config.apiUrl}/favorites/${robot.id}`)
+          .then(() => {
+            robot.favorite = !robot.favorite
+          })
+      }
     }
   }
 }

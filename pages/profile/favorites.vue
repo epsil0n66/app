@@ -13,7 +13,7 @@
       <RobotsTable
         :hide-footer="true"
         :robots-table-data="robotsTableData"
-        :robots-path="'robots'"
+        :robots-path="'/robots'"
       />
     </v-card>
   </div>
@@ -34,12 +34,12 @@ export default {
 
   mounted () {
     this.$axios.get(`${config.apiUrl}/favorites`).then((res) => {
-      this.robotsTableData = res.data
+      this.robotsTableData = res.data.map(el => el.robot)
     })
       .catch((e) => {
         if (e.response.status === 401) {
           this.$axios.get(`${config.apiUrl}/favorites`).then((res) => {
-            this.robotsTableData = res.data
+            this.robotsTableData = res.data.map(el => el.robot)
           })
         }
       })

@@ -222,7 +222,11 @@ export default {
     this.UserRole = this.$store.getters.getUserRole
     this.Token = this.$store.getters.getToken
     this.RefreshToken = this.$store.getters.getRefreshToken
-    this.$axios.get(`${config.apiUrl}/robots`).then((res) => {
+    this.$axios.get(`${config.apiUrl}/robots`, {
+      headers: {
+        Authorization: this.Token
+      }
+    }).then((res) => {
       this.robotsTableData = res.data.robots
       this.robotsTableTotalRobots = res.data.meta.robots_total
       this.robotsTableTotalPages = Math.ceil(this.robotsTableTotalRobots / 25)
