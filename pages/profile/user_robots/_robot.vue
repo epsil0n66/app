@@ -284,8 +284,18 @@
                 class="mt-6 mb-3 justify-end align-end"
               >
                 <v-icon
-                  class="mb-2"
+                  v-if="isFavorite"
+                  class="ma-2"
                   color="green"
+                  @click="favorite"
+                >
+                  mdi-star
+                </v-icon>
+                <v-icon
+                  v-else
+                  class="ma-2"
+                  color="green"
+                  @click="favorite"
                 >
                   mdi-star-outline
                 </v-icon>
@@ -361,11 +371,14 @@ export default {
         file: null
       },
       key: null,
-      url: null
+      url: null,
+      isFavorite: false
     }
   },
   mounted () {
     this.userRole = this.$store.getters.getUserRole
+    console.log(this.robotData)
+    this.isFavorite = this.robotData.data.favorite
   },
   methods: {
     editRobot () {
@@ -390,6 +403,19 @@ export default {
     },
     copy (item) {
       navigator.clipboard.writeText(item)
+    },
+    favorite () {
+      if (this.isFavorite === false) {
+        this.$axios.post(`${config.apiUrl}/favorites`, { robot_id: this.robotData.data.id })
+          .then(() => {
+            this.isFavorite = !this.isFavorite
+          })
+      } else {
+        this.$axios.delete(`${config.apiUrl}/favorites/${this.robotData.data.id}`)
+          .then(() => {
+            this.isFavorite = !this.isFavorite
+          })
+      }
     }
   }
 }

@@ -167,7 +167,7 @@
                 dense
                 single-line
                 label="Binance"
-                :items="['1', '2', '3']"
+                :items="['Binance spot balance']"
               />
               <v-row>
                 <v-col
@@ -382,8 +382,18 @@
                   Currently rents: <span class="mx-3" style="font-weight:400;">12 users</span>
                 </p>
                 <v-icon
-                  class="mb-2"
+                  v-if="isFavorite"
+                  class="ma-2"
                   color="green"
+                  @click="favorite"
+                >
+                  mdi-star
+                </v-icon>
+                <v-icon
+                  v-else
+                  class="ma-2"
+                  color="green"
+                  @click="favorite"
                 >
                   mdi-star-outline
                 </v-icon>
@@ -460,11 +470,15 @@ export default {
       depositFormData: {
         deposit: null,
         stopBalance: null
-      }
+      },
+      isFavorite: false
     }
   },
   mounted () {
     this.userRole = this.$store.getters.getUserRole
+    this.isFavorite = this.robotData.data.favorite
+    console.log(this.robotData)
+    console.log(this.isFavorite)
   },
   methods: {
     rentRobot (item) {
@@ -478,6 +492,19 @@ export default {
         } else {
           this.rentKeyDialog = true
         }
+      }
+    },
+    favorite () {
+      if (this.isFavorite === false) {
+        this.$axios.post(`${config.apiUrl}/favorites`, { robot_id: this.robotData.data.id })
+          .then(() => {
+            this.isFavorite = !this.isFavorite
+          })
+      } else {
+        this.$axios.delete(`${config.apiUrl}/favorites/${this.robotData.data.id}`)
+          .then(() => {
+            this.isFavorite = !this.isFavorite
+          })
       }
     }
   }

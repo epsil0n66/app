@@ -213,7 +213,7 @@
                 dense
                 single-line
                 label="Binance"
-                :items="['1', '2', '3']"
+                :items="['Binance spot balance']"
               />
               <v-row>
                 <v-col

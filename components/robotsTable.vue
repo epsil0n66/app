@@ -280,7 +280,6 @@ export default {
       this.$refs.rent.checkKey(robotID, exchangeID)
     },
     favorite (robot) {
-      console.log(robot)
       if (robot.favorite === false) {
         this.$axios.post(`${config.apiUrl}/favorites`, { robot_id: robot.id })
           .then(() => {
