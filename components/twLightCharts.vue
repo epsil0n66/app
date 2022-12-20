@@ -139,7 +139,8 @@ export default {
       chartData: null,
       lineData: null,
       timer: null,
-      tooltip: false
+      tooltip: false,
+      isSafari: undefined
     }
   },
   watch: {
@@ -153,6 +154,10 @@ export default {
     }
   },
   mounted () {
+    const chromeAgent = navigator.userAgent.includes('Chrome')
+    const safariAgent = navigator.userAgent.includes('Safari')
+    if ((chromeAgent) && (safariAgent)) { this.isSafari = false }
+    console.log(this.isSafari)
     instance = this.$axios.create()
     delete instance.defaults.headers.Authorization
     instance('https://arobots.evospb.ru/api/timeframes')
@@ -164,9 +169,6 @@ export default {
       this.watchForUpdate()
     })
     function fullscreenchanged () {
-    // document.fullscreenElement will point to the element that
-    // is in fullscreen mode if there is one. If not, the value
-    // of the property is null.
       if (document.fullscreenElement) {
         console.log(`Element: ${document.fullscreenElement.id} entered fullscreen mode.`)
       } else {
@@ -269,7 +271,6 @@ export default {
           this.chartData = res.data.map((a) => {
             return { time: a[0] / 1000, open: parseFloat(a[1]), high: parseFloat(a[2]), low: parseFloat(a[3]), close: parseFloat(a[4]) }
           })
-          console.log(res)
           this.lineData = res.data.map((a) => {
             return { time: a[0] / 1000, value: parseFloat(a[4]) }
           })
@@ -288,7 +289,6 @@ export default {
           })
           lineData.pop()
           this.lineData = lineData.concat(this.lineData)
-          console.log(this.chartData)
           this.watchForUpdate()
           this.applySeries()
         })
@@ -327,18 +327,22 @@ export default {
     },
     enterFullscreen () {
       const chartEl = document.getElementById('twChart')
-      if (!document.fullscreenElement) {
-        // If the document is not in full screen mode
-        // make the video full screen
-        chartEl.requestFullscreen()
-        chart.applyOptions({ width: 1800, height: 900 })
-      } else {
-        // Otherwise exit the full screen
-        if (document.exitFullscreen) {
-          document.exitFullscreen()
+      if (this.isSafari === true) {
+        if (!document.webkitFullscreenElement) {
+          chartEl.webkitRequestFullscreen()
+          chart.applyOptions({ width: 1800, height: 900 })
+        } else if (document.webkitExitFullscreen) {
+          document.webkitExitFullscreen()
           chart.applyOptions({ width: 600, height: 400 })
         }
-        console.log('wer')
+        return
+      }
+      if (!document.fullscreenElement) {
+        chartEl.requestFullscreen()
+        chart.applyOptions({ width: 1800, height: 900 })
+      } else if (document.exitFullscreen) {
+        document.exitFullscreen()
+        chart.applyOptions({ width: 600, height: 400 })
       }
     }
   }
