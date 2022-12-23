@@ -174,16 +174,16 @@ export default {
       this.applySeries()
       this.watchForUpdate()
     })
-    function fullscreenchanged () {
-      if (this.isSafari === true) {
-        if (document.webkitFullscreenElement !== null) {
-          console.log(`Element: ${document.webkitFullscreenElement} entered fullscreen mode.`)
-        } else {
-          chart.applyOptions({ width: 600, height: 400 })
-          console.log('Leaving fullscreen mode.')
-        }
-        return
+    function safarifullscreenchanged () {
+      console.log('document.webkitullscreenElement = ', document.webkitFullscreenElement)
+      if (document.webkitFullscreenElement !== null) {
+        console.log(`Element: ${document.webkitFullscreenElement} entered fullscreen mode.`)
+      } else {
+        chart.applyOptions({ width: 600, height: 400 })
+        console.log('Leaving fullscreen mode.')
       }
+    };
+    function fullscreenchanged () {
       if (document.fullscreenElement) {
         console.log(`Element: ${document.fullscreenElement.id} entered fullscreen mode.`)
       } else {
@@ -192,7 +192,11 @@ export default {
       }
     };
     const chartEl = document.getElementById('twChart')
-    chartEl.addEventListener('fullscreenchange', fullscreenchanged)
+    if (this.isSafari) {
+      chartEl.addEventListener('webkitfullscreenchange', safarifullscreenchanged)
+    } else {
+      chartEl.addEventListener('fullscreenchange', fullscreenchanged)
+    }
     this.applyWebSocketData()
     this.applyMarkers()
   },
