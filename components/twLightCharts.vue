@@ -178,46 +178,8 @@ export default {
     };
     const chartEl = document.getElementById('twChart')
     chartEl.addEventListener('fullscreenchange', fullscreenchanged)
-    const socket = new WebSocket('wss://stream.binance.com:9443/ws/ethbusd@kline_1m')
-    socket.onmessage = function (event) {
-      const a = JSON.parse(event.data).k
-      if (candlestickSeries) {
-        candlestickSeries.update({ time: a.t / 1000, open: parseFloat(a.o), high: parseFloat(a.h), low: parseFloat(a.l), close: parseFloat(a.c) })
-      }
-      if (barSeries) {
-        barSeries.update({ time: a.t / 1000, open: parseFloat(a.o), high: parseFloat(a.h), low: parseFloat(a.l), close: parseFloat(a.c) })
-      }
-      if (lineSeries) {
-        lineSeries.update({ time: a.t / 1000, value: parseFloat(a.c) })
-      }
-    }
-    const maxPriceLine = {
-      price: 1280,
-      color: 'red',
-      lineWidth: 2,
-      lineStyle: 2, // LineStyle.Dashed
-      axisLabelVisible: true,
-      title: 'Price'
-    }
-    const markers = [
-      {
-        time: Date.now() / 1000,
-        position: 'aboveBar',
-        color: 'green',
-        shape: 'circle',
-        text: 'Marker'
-      }
-    ]
-    if (candlestickSeries) {
-      candlestickSeries.createPriceLine(maxPriceLine)
-      candlestickSeries.setMarkers(markers)
-    } else if (barSeries) {
-      barSeries.createPriceLine(maxPriceLine)
-      barSeries.setMarkers(markers)
-    } else if (lineSeries) {
-      lineSeries.createPriceLine(maxPriceLine)
-      lineSeries.setMarkers(markers)
-    }
+    this.applyWebSocketData()
+    this.applyMarkers()
   },
   destroyed () {
     clearInterval(this.timer)
@@ -263,6 +225,50 @@ export default {
           lineSeries.setData(this.lineData)
           candlestickSeries = undefined
           barSeries = undefined
+      }
+    },
+    applyMarkers () {
+      const maxPriceLine = {
+        price: 1280,
+        color: 'red',
+        lineWidth: 2,
+        lineStyle: 2, // LineStyle.Dashed
+        axisLabelVisible: true,
+        title: 'Price'
+      }
+      const markers = [
+        {
+          time: Date.now() / 1000,
+          position: 'aboveBar',
+          color: 'green',
+          shape: 'circle',
+          text: 'Marker'
+        }
+      ]
+      if (candlestickSeries) {
+        candlestickSeries.createPriceLine(maxPriceLine)
+        candlestickSeries.setMarkers(markers)
+      } else if (barSeries) {
+        barSeries.createPriceLine(maxPriceLine)
+        barSeries.setMarkers(markers)
+      } else if (lineSeries) {
+        lineSeries.createPriceLine(maxPriceLine)
+        lineSeries.setMarkers(markers)
+      }
+    },
+    applyWebSocketData () {
+      const socket = new WebSocket('wss://stream.binance.com:9443/ws/ethbusd@kline_1m')
+      socket.onmessage = function (event) {
+        const a = JSON.parse(event.data).k
+        if (candlestickSeries) {
+          candlestickSeries.update({ time: a.t / 1000, open: parseFloat(a.o), high: parseFloat(a.h), low: parseFloat(a.l), close: parseFloat(a.c) })
+        }
+        if (barSeries) {
+          barSeries.update({ time: a.t / 1000, open: parseFloat(a.o), high: parseFloat(a.h), low: parseFloat(a.l), close: parseFloat(a.c) })
+        }
+        if (lineSeries) {
+          lineSeries.update({ time: a.t / 1000, value: parseFloat(a.c) })
+        }
       }
     },
     async loadData () {

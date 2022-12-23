@@ -477,8 +477,6 @@ export default {
   mounted () {
     this.userRole = this.$store.getters.getUserRole
     this.isFavorite = this.robotData.data.favorite
-    console.log(this.robotData)
-    console.log(this.isFavorite)
   },
   methods: {
     rentRobot (item) {

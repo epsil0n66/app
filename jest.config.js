@@ -11,8 +11,11 @@ module.exports = {
   ],
   transform: {
     '^.+\\.js$': 'babel-jest',
-    '.*\\.(vue)$': 'vue-jest'
+    '.*\\.(vue)$': 'vue-jest',
   },
+  transformIgnorePatterns: [
+    "node_modules/(?!variables/.*)"
+  ],
   collectCoverage: true,
   collectCoverageFrom: [
     '<rootDir>/components/**/*.vue',
