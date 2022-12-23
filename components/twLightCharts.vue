@@ -346,9 +346,14 @@ export default {
       }, 50)
     },
     takeScreenshot () {
-      chart.takeScreenshot().toBlob((blob) => {
-        navigator.clipboard.write([new window.ClipboardItem({ 'image/png': blob })])
-      })
+      const url = chart.takeScreenshot().toDataURL()
+      async function getImageBlobFromUrl (url) {
+        const fetchedImageData = await fetch(url)
+        const blob = await fetchedImageData.blob()
+        return blob
+      }
+      const clip = [new window.ClipboardItem({ 'image/png': getImageBlobFromUrl(url) })]
+      navigator.clipboard.write(clip)
     },
     enterFullscreen () {
       const chartEl = document.getElementById('twChart')
