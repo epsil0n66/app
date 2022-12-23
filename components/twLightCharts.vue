@@ -140,7 +140,11 @@ export default {
       lineData: null,
       timer: null,
       tooltip: false,
-      isSafari: undefined
+      isSafari: true,
+      resolution: {
+        height: null,
+        width: null
+      }
     }
   },
   watch: {
@@ -154,6 +158,8 @@ export default {
     }
   },
   mounted () {
+    this.resolution.height = screen.height
+    this.resolution.width = screen.width
     const chromeAgent = navigator.userAgent.includes('Chrome')
     const safariAgent = navigator.userAgent.includes('Safari')
     if ((chromeAgent) && (safariAgent)) { this.isSafari = false }
@@ -169,6 +175,15 @@ export default {
       this.watchForUpdate()
     })
     function fullscreenchanged () {
+      if (this.isSafari === true) {
+        if (document.webkitFullscreenElement !== null) {
+          console.log(`Element: ${document.webkitFullscreenElement} entered fullscreen mode.`)
+        } else {
+          chart.applyOptions({ width: 600, height: 400 })
+          console.log('Leaving fullscreen mode.')
+        }
+        return
+      }
       if (document.fullscreenElement) {
         console.log(`Element: ${document.fullscreenElement.id} entered fullscreen mode.`)
       } else {
@@ -204,7 +219,7 @@ export default {
       if (document.fullscreenElement) {
         // If the document is not in full screen mode
         // make the video full screen
-        chart.applyOptions({ width: 1800, height: 900 })
+        chart.applyOptions({ width: this.resolution.width, height: this.resolution.height })
       }
       timeScale = chart.timeScale()
       switch (this.currentSeries.id) {
@@ -336,7 +351,7 @@ export default {
       if (this.isSafari === true) {
         if (!document.webkitFullscreenElement) {
           chartEl.webkitRequestFullscreen()
-          chart.applyOptions({ width: 1800, height: 900 })
+          chart.applyOptions({ width: this.resolution.width, height: this.resolution.height })
         } else if (document.webkitExitFullscreen) {
           document.webkitExitFullscreen()
           chart.applyOptions({ width: 600, height: 400 })
@@ -345,7 +360,7 @@ export default {
       }
       if (!document.fullscreenElement) {
         chartEl.requestFullscreen()
-        chart.applyOptions({ width: 1800, height: 900 })
+        chart.applyOptions({ width: this.resolution.width, height: this.resolution.height })
       } else if (document.exitFullscreen) {
         document.exitFullscreen()
         chart.applyOptions({ width: 600, height: 400 })
