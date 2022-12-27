@@ -439,6 +439,14 @@
         </div>
       </v-card>
     </v-card>
+    <div
+      flat
+      style="margin-left: 7.3vw; margin-right: 7.3vw;"
+    >
+      <ordersTable
+        :orders-table-data="orderData.data"
+      />
+    </div>
   </v-main>
 </template>
 
@@ -447,15 +455,27 @@ import Vue from 'vue'
 import IconCrypto from 'vue-cryptocurrency-icons'
 import config from '@/config'
 import twLightCharts from '~/components/twLightCharts.vue'
+import ordersTable from '~/components/ordersTable.vue'
 Vue.use(IconCrypto)
 
 export default {
   components: {
-    twLightCharts
+    twLightCharts,
+    ordersTable
   },
   async asyncData ({ params, $axios }) {
-    const robotData = await $axios.get(`${config.apiUrl}/robots/${params.robot}`)
-    return { robotData }
+    let robotData = await $axios.get(`${config.apiUrl}/robots/${params.robot}`)
+    if (!robotData) {
+      robotData = await $axios.get(`${config.apiUrl}/robots/${params.robot}`)
+    }
+    let orderData = await $axios.get(`${config.apiUrl}/orders?robot_id=${params.robot}`)
+      .catch(() => {
+        console.log('error')
+      })
+    if (!orderData) {
+      orderData = await $axios.get(`${config.apiUrl}/orders?robot_id=${params.robot}`)
+    }
+    return { robotData, orderData }
   },
   data () {
     return {
