@@ -59,42 +59,17 @@ export const mutations = {
 }
 
 export const actions = {
-  async onSignIn ({ commit, dispatch }, { email, password }) {
-    await AuthAPI.login(email, password).then((res) => {
-      this.$axios.interceptors.response.use(function (response) {
-        return response
-      }, function (error) {
-        dispatch('onRefresh')
-        const response = error.response
-        if (response) {
-          if (response.status === 401) {
-            dispatch('onSignOut')
-              .then(this.$router.push('/'))
-          }
-        }
-        return Promise.reject(error)
-      })
-      commit('setToken', res.headers.authorization)
-      this.$axios.defaults.headers.Authorization = `${res.headers.authorization}`
-      DefaultAPIInstance.defaults.headers.Authorization = `${res.headers.authorization}`
-      if (res.headers.refresh) {
-        commit('setRefreshToken', res.headers.refresh)
-      }
-      commit('setUserRole', 'registered')
-      dispatch('onProfile')
-      this.$router.push({
-        path: '/robots'
-      })
-    })
+  onSignIn ({ commit }, { email }) {
+    commit('setUserNickname', email)
+    commit('setUserRole', 'registered')
+    localStorage.setItem('userRole', 'registered')
+    this.$router.push({ path: '/robots' })
   },
-  async onSignUp ({ commit }, { email, registrationToken }) {
-    await AuthAPI.confirm(email, registrationToken).then((res) => {
-      commit('setToken', res.headers.authorization)
-      commit('setRefreshToken', res.headers.refresh)
-      commit('setUserRole', 'registered')
-      localStorage.setItem('userRole', 'registered')
-      this.$router.push({ path: '/robots' })
-    })
+  onSignUp ({ commit }, { email }) {
+    commit('setUserNickname', email)
+    commit('setUserRole', 'registered')
+    localStorage.setItem('userRole', 'registered')
+    this.$router.push({ path: '/robots' })
   },
   async onPasswordChange ({ commit }, { email, recoveryToken }) {
     await AuthAPI.recovery(email, recoveryToken).then((res) => {

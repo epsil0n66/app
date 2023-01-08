@@ -6,8 +6,8 @@ export default {
 
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
-    titleTemplate: '%s - arobots-frontend',
-    title: 'arobots-frontend',
+    titleTemplate: '%s - treasurer',
+    title: 'treasurer',
     htmlAttrs: {
       lang: 'en'
     },

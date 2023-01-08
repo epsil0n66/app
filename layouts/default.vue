@@ -10,7 +10,7 @@
         style="width:10vw"
       />
       <img
-        src="@/static/arobots.png"
+        src="@/assets/icon.png"
         height="36px"
         style="cursor: pointer"
         @click="$router.push('/robots')"
@@ -218,15 +218,15 @@ export default {
       refresher: null,
       navLinks: {
         registered: [
-          { name: 'Trading Robots', to: '/robots' },
-          { name: 'Dashboard', to: '/profile/dashboard' },
-          { name: 'Rented Robots', to: '/profile/rented_robots' }
+          { name: 'Главная', to: '/robots' },
+          { name: 'Инвестиции', to: '/profile/dashboard' },
+          { name: 'Калькуляторы', to: '/profile/rented_robots' },
+          { name: 'Новости', to: '/news' }
         ],
         guest: [
-          { name: 'Trading Robots', to: '/robots' },
-          { name: 'Referal', to: '/referal' },
-          { name: 'About', to: '/about' },
-          { name: 'API', to: '/api' }
+          { name: 'Главная', to: '/robots' },
+          { name: 'Калькуляторы', to: '/referal' },
+          { name: 'Новости', to: '/news' }
         ]
       },
       currentURL: null
