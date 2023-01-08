@@ -289,7 +289,7 @@
 </template>
 
 <script>
-import RobotsTable from '~/components/robotsTable.vue'
+import RobotsTable from '~/components/securitiesTable.vue'
 import config from '@/config'
 
 export default {

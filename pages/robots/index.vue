@@ -181,7 +181,7 @@
 </template>
 
 <script>
-import RobotsTable from '~/components/robotsTable.vue'
+import RobotsTable from '~/components/securitiesTable.vue'
 import config from '@/config'
 export default {
   name: 'ArobotsFrontendRobots',
@@ -222,32 +222,11 @@ export default {
     this.UserRole = this.$store.getters.getUserRole
     this.Token = this.$store.getters.getToken
     this.RefreshToken = this.$store.getters.getRefreshToken
-    this.$axios.get(`${config.apiUrl}/robots`, {
-      headers: {
-        Authorization: this.Token
-      }
-    }).then((res) => {
-      this.robotsTableData = res.data.robots
-      this.robotsTableTotalRobots = res.data.meta.robots_total
-      this.robotsTableTotalPages = Math.ceil(this.robotsTableTotalRobots / 25)
-    })
-      .catch((e) => {
-        if (e.response.status === 401) {
-          this.$axios.get(`${config.apiUrl}/robots`).then((res) => {
-            this.robotsTableData = res.data.robots
-            this.robotsTableTotalRobots = res.data.meta.robots_total
-            this.robotsTableTotalPages = Math.ceil(this.robotsTableTotalRobots / 25)
-          })
-        }
+    this.$axios.get('https://iss.moex.com/iss/engines/stock/markets/shares/securities.json')
+      .then((res) => {
+        this.robotsTableData = res.data.securities.data.map((el) => { return { short: el[0], name: el[2], price: el[3], type: el[7] } })
+        console.log(this.robotsTableData)
       })
-    this.$axios.get(`${config.apiUrl}/currencies`).then((res) => {
-      console.log(res.data)
-      this.filters.currencyItems = res.data
-    })
-    this.$axios.get(`${config.apiUrl}/exchanges`).then((res) => {
-      console.log(res.data)
-      this.filters.exchangeItems = res.data
-    })
   },
   methods: {
     filterChips (item) {
