@@ -35,10 +35,10 @@
           <h1
             class="mb-3"
           >
-            Rent {{ robotData.data.robot.name }}
+            Rent {{ robotData.data.name }}
           </h1>
           <p class="text--secondary mb-8">
-            To rent this robot, please register on ARobots
+            To rent this robot, please register on Treasurer
           </p>
           <v-btn
             class="white--text mb-8"
@@ -233,7 +233,7 @@
     <span
       style="cursor: pointer;color: transparent; margin-left: 7.3vw;"
       class="text-body-1 px-0 pt-8 green--text"
-      @click="$router.push('/profile/rented_robots')"
+      @click="$router.push('/stocks')"
     >
       <v-icon
         style="cursor: pointer;"
@@ -265,9 +265,9 @@
                   src="@/static/robotexample2.png"
                 >
                 <v-col>
-                  <h1>{{ robotData.data.robot.name }}</h1>
+                  <h1>{{ robotData.data.name }}</h1>
                   <p class="text-md-body-1 mb-1 font-weight-thin">
-                    {{ robotData.data.robot.user_creator }}
+                    {{ robotData.data.user_creator }}
                   </p>
                   <div
                     class="ma-0 px-2 py-1 pt-2 d-flex justify-center"
@@ -319,15 +319,15 @@
                     format="svg"
                     height="20px"
                     width="20px"
-                    :coinname="robotData.data.robot.currency.name.split('/')[0]"
-                  />{{ robotData.data.robot.currency.name.split('/')[0] }} /
+                    :coinname="robotData.data.currency.name.split('/')[0]"
+                  />{{ robotData.data.currency.name.split('/')[0] }} /
                   <IconCrypto
                     class="mr-1"
                     format="svg"
                     height="20px"
                     width="20px"
-                    :coinname="robotData.data.robot.currency.name.split('/')[1]"
-                  />{{ robotData.data.robot.currency.name.split('/')[1] }}
+                    :coinname="robotData.data.currency.name.split('/')[1]"
+                  />{{ robotData.data.currency.name.split('/')[1] }}
                 </p>
                 <p
                   style="font-weight:500"
@@ -335,14 +335,27 @@
                   Stock:
                   <IconCrypto
                     class="mr-1"
-                    :coinname="robotData.data.robot.exchange.name"
+                    :coinname="robotData.data.exchange.name"
                     color="color"
                     format="svg"
                     height="20px"
                     width="20px"
                   />
-                  {{ robotData.data.robot.exchange.name }}
+                  {{ robotData.data.exchange.name }}
                 </p>
+                <span><p style="font-weight:500">Trades:
+                  <v-icon
+                    color="green"
+                  >
+                    mdi-swap-horizontal
+                  </v-icon>
+                  {{ robotData.data.worked_orders }} Time:
+                  <v-icon
+                    color="green"
+                  >
+                    mdi-clock-time-three-outline
+                  </v-icon>
+                  {{ robotData.data.total_working_time.days }}D {{ robotData.data.total_working_time.hours }}H </p></span>
                 <v-btn
                   class="white--text"
                   color="primary"
@@ -387,16 +400,16 @@
                 <div
                   class="ma-0 px-2 py-2 mx-6 d-flex justify-center align-start"
                   style="border-radius: 16px;width: fit-content"
-                  :style="[robotData.data.robot.online ? { 'border': 'solid 1px green' } : { 'border': 'solid 1px red' }]"
+                  :style="[robotData.data.online ? { 'border': 'solid 1px green' } : { 'border': 'solid 1px red' }]"
                 >
                   <v-icon
                     class="mr-2"
-                    :color="robotData.data.robot.online ? 'green': 'red' "
+                    :color="robotData.data.online ? 'green': 'red' "
                   >
                     mdi-circle
                   </v-icon>
                   <p
-                    v-if="robotData.data.robot.online"
+                    v-if="robotData.data.online"
                     class="ma-0 text-body-2"
                   >
                     Online
@@ -451,19 +464,16 @@ export default {
     ordersTable
   },
   async asyncData ({ params, $axios }) {
-    let robotData = await $axios.get(`${config.apiUrl}/rents/${params.robot}`)
-      .catch(() => {
-        console.log('error')
-      })
+    let robotData = await $axios.get(`${config.apiUrl}/stocks/${params.robot}`)
     if (!robotData) {
-      robotData = await $axios.get(`${config.apiUrl}/rents/${params.robot}`)
+      robotData = await $axios.get(`${config.apiUrl}/stocks/${params.robot}`)
     }
-    let orderData = await $axios.get(`${config.apiUrl}/user_orders?robot_id=${params.robot}`)
+    let orderData = await $axios.get(`${config.apiUrl}/orders?robot_id=${params.robot}`)
       .catch(() => {
         console.log('error')
       })
     if (!orderData) {
-      orderData = await $axios.get(`${config.apiUrl}/user_orders?robot_id=${params.robot}`)
+      orderData = await $axios.get(`${config.apiUrl}/orders?robot_id=${params.robot}`)
     }
     return { robotData, orderData }
   },
@@ -486,9 +496,7 @@ export default {
   },
   mounted () {
     this.userRole = this.$store.getters.getUserRole
-    this.isFavorite = this.robotData.data.robot.favorite
-    console.log(this.robotData)
-    console.log(this.isFavorite)
+    this.isFavorite = this.robotData.data.favorite
   },
   methods: {
     rentRobot (item) {
@@ -506,12 +514,12 @@ export default {
     },
     favorite () {
       if (this.isFavorite === false) {
-        this.$axios.post(`${config.apiUrl}/favorites`, { robot_id: this.robotData.data.robot.id })
+        this.$axios.post(`${config.apiUrl}/favorites`, { robot_id: this.robotData.data.id })
           .then(() => {
             this.isFavorite = !this.isFavorite
           })
       } else {
-        this.$axios.delete(`${config.apiUrl}/favorites/${this.robotData.data.robot.id}`)
+        this.$axios.delete(`${config.apiUrl}/favorites/${this.robotData.data.id}`)
           .then(() => {
             this.isFavorite = !this.isFavorite
           })

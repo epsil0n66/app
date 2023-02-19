@@ -8,7 +8,7 @@
 import TwLightCharts from '~/components/twLightCharts.vue'
 
 export default {
-  name: 'ArobotsFrontendTest',
+  name: 'TreasurerFrontendTest',
   components: { TwLightCharts },
   data () {
     return {}

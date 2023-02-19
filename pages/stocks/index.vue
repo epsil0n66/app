@@ -8,7 +8,7 @@
         class="main-card"
       >
         <h1>
-          Arobots
+          Treasurer
         </h1>
         <v-card
           style="margin-left: 7.3vw; margin-right: 7.3vw; z-index: 1;"
@@ -163,15 +163,15 @@
           style="z-index: 1; position:relative"
           width="90vw"
         >
-          <RobotsTable
+          <stocksTable
             :hide-footer="true"
-            :robots-table-data="robotsTableData"
-            :robots-path="'robots'"
+            :stocks-table-data="stocksTableData"
+            :stocks-path="'stocks'"
           />
           <v-pagination
             v-model="filters.page"
             class="my-8"
-            :length="robotsTableTotalPages"
+            :length="stocksTableTotalPages"
             :total-visible="4"
           />
         </div>
@@ -181,19 +181,19 @@
 </template>
 
 <script>
-import RobotsTable from '~/components/securitiesTable.vue'
+import stocksTable from '~/components/stocksTable.vue'
 import config from '@/config'
 export default {
-  name: 'ArobotsFrontendRobots',
-  components: { RobotsTable },
+  name: 'TreasurerFrontendstocks',
+  components: { stocksTable },
   data () {
     return {
       demoToken: null,
       demoRefreshToken: null,
       demoUserRole: null,
-      robotsTableData: [],
-      robotsTableTotalRobots: 0,
-      robotsTableTotalPages: 1,
+      stocksTableData: [],
+      stocksTableTotalstocks: 0,
+      stocksTableTotalPages: 1,
       filters: {
         filterQuery: '',
         search: null,
@@ -224,8 +224,8 @@ export default {
     this.RefreshToken = this.$store.getters.getRefreshToken
     this.$axios.get('https://iss.moex.com/iss/engines/stock/markets/shares/securities.json')
       .then((res) => {
-        this.robotsTableData = res.data.securities.data.map((el) => { return { short: el[0], name: el[2], price: el[3], type: el[7] } })
-        console.log(this.robotsTableData)
+        this.stocksTableData = res.data.securities.data.map((el) => { return { short: el[0], name: el[2], price: el[3], type: el[7] } })
+        console.log(this.stocksTableData)
       })
   },
   methods: {
@@ -249,8 +249,8 @@ export default {
         this.filters.filterQuery += `${result}`
       }
       this.filters.filteredChips = this.filters.currency
-      this.$axios.get(`${config.apiUrl}/robots?${this.filters.filterQuery}`).then((res) => {
-        this.robotsTableData = res.data.robots
+      this.$axios.get(`${config.apiUrl}/stocks?${this.filters.filterQuery}`).then((res) => {
+        this.stocksTableData = res.data.stocks
       })
     },
     clearFilters () {

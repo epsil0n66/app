@@ -7,13 +7,13 @@
       <v-row
         no-gutters
       >
-        <h1>Favorite robots</h1>
+        <h1>Favorite stocks</h1>
         <v-spacer />
       </v-row>
-      <RobotsTable
+      <stocksTable
         :hide-footer="true"
-        :robots-table-data="robotsTableData"
-        :robots-path="'/robots'"
+        :stocks-table-data="stocksTableData"
+        :stocks-path="'/stocks'"
       />
     </v-card>
   </div>
@@ -21,25 +21,25 @@
 
 <script>
 import config from '~/config'
-import RobotsTable from '~/components/securitiesTable.vue'
+import stocksTable from '~/components/stocksTable.vue'
 export default {
-  name: 'ArobotsFrontendFavorites',
-  components: { RobotsTable },
+  name: 'TreasurerFrontendFavorites',
+  components: { stocksTable },
 
   data () {
     return {
-      robotsTableData: []
+      stocksTableData: []
     }
   },
 
   mounted () {
     this.$axios.get(`${config.apiUrl}/favorites`).then((res) => {
-      this.robotsTableData = res.data.map(el => el.robot)
+      this.stocksTableData = res.data.map(el => el.robot)
     })
       .catch((e) => {
         if (e.response.status === 401) {
           this.$axios.get(`${config.apiUrl}/favorites`).then((res) => {
-            this.robotsTableData = res.data.map(el => el.robot)
+            this.stocksTableData = res.data.map(el => el.robot)
           })
         }
       })

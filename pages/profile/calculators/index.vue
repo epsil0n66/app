@@ -55,7 +55,7 @@
           <v-row
             no-gutters
           >
-            <h1>Arobots</h1>
+            <h1>Treasurer</h1>
             <v-spacer />
             <v-btn
               v-for="button in buttons"
@@ -73,10 +73,10 @@
               {{ button.name }}
             </v-btn>
           </v-row>
-          <RobotsTable
+          <stocksTable
             :hide-footer="true"
-            :robots-table-data="robotsTableData"
-            :robots-path="'rented_robots'"
+            :stocks-table-data="stocksTableData"
+            :stocks-path="'calculators'"
           />
         </v-card>
       </div>
@@ -85,18 +85,18 @@
 </template>
 
 <script>
-import RobotsTable from '~/components/securitiesTable.vue'
+import stocksTable from '~/components/stocksTable.vue'
 import config from '@/config'
 
 export default {
-  name: 'ArobotsFrontendAddedRobots',
-  components: { RobotsTable },
+  name: 'TreasurerFrontendAddedstocks',
+  components: { stocksTable },
   data () {
     return {
       pageAlert: false,
       pageAlertText: null,
       alertType: null,
-      robotsTableData: [],
+      stocksTableData: [],
       url: null,
       buttons: [
         { name: 'Rent', active: true },
@@ -107,12 +107,12 @@ export default {
   },
   mounted () {
     this.$axios.get(`${config.apiUrl}/rents?page=1`).then((res) => {
-      this.robotsTableData = res.data.map(el => el.robot)
+      this.stocksTableData = res.data.map(el => el.robot)
     })
       .catch((e) => {
         if (e.response.status === 401) {
           this.$axios.get(`${config.apiUrl}/rents?page=1`).then((res) => {
-            this.robotsTableData = res.data.map(el => el.robot)
+            this.stocksTableData = res.data.map(el => el.robot)
           })
         }
       })
@@ -132,9 +132,9 @@ export default {
       }
       this.$axios.get(`${config.apiUrl}/rents?${filterQuery}`).then((res) => {
         if (res.data) {
-          this.robotsTableData = res.data.map(el => el.robot)
+          this.stocksTableData = res.data.map(el => el.robot)
         } else {
-          this.robotsTableData = null
+          this.stocksTableData = null
         }
       })
       console.log(filterQuery)

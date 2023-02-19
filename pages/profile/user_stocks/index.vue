@@ -55,7 +55,7 @@
           <v-row
             no-gutters
           >
-            <h1>Arobots</h1>
+            <h1>Treasurer</h1>
             <v-spacer />
             <v-btn
               height="48px"
@@ -67,10 +67,10 @@
               Add robot
             </v-btn>
           </v-row>
-          <RobotsTable
+          <stocksTable
             :hide-footer="true"
-            :robots-table-data="robotsTableData"
-            :robots-path="'user_robots'"
+            :stocks-table-data="stocksTableData"
+            :stocks-path="'user_stocks'"
           />
         </v-card>
         <v-dialog
@@ -289,12 +289,12 @@
 </template>
 
 <script>
-import RobotsTable from '~/components/securitiesTable.vue'
+import stocksTable from '~/components/stocksTable.vue'
 import config from '@/config'
 
 export default {
-  name: 'ArobotsFrontendAddedRobots',
-  components: { RobotsTable },
+  name: 'TreasurerFrontendAddedstocks',
+  components: { stocksTable },
   data () {
     return {
       pageAlert: false,
@@ -315,7 +315,7 @@ export default {
         imageId: null,
         file: null
       },
-      robotsTableData: [],
+      stocksTableData: [],
       url: null
     }
   },
@@ -336,13 +336,13 @@ export default {
     this.$axios.get(`${config.apiUrl}/timeframes`).then((res) => {
       this.addRobotData.timeframeItems = res.data
     })
-    this.$axios.get(`${config.apiUrl}/user_robots`).then((res) => {
-      this.robotsTableData = res.data
+    this.$axios.get(`${config.apiUrl}/user_stocks`).then((res) => {
+      this.stocksTableData = res.data
     })
       .catch((e) => {
         if (e.response.status === 401) {
-          this.$axios.get(`${config.apiUrl}/user_robots`).then((res) => {
-            this.robotsTableData = res.data
+          this.$axios.get(`${config.apiUrl}/user_stocks`).then((res) => {
+            this.stocksTableData = res.data
           })
         }
       })
@@ -372,7 +372,7 @@ export default {
             this.addRobotData.imageId = res.data.id
             data.image_id = parseInt(res.data.id)
             console.log(data)
-            this.$axios.post(`${config.apiUrl}/robots`, data)
+            this.$axios.post(`${config.apiUrl}/stocks`, data)
           })
             .catch(() => {
               setTimeout(() => {
@@ -384,7 +384,7 @@ export default {
                   this.addRobotData.imageId = res.data.id
                   data.image_id = res.data.id
                   console.log(data)
-                  this.$axios.post(`${config.apiUrl}/robots`, data)
+                  this.$axios.post(`${config.apiUrl}/stocks`, data)
                     .catch((e) => {
                       this.pageAlert = true
                       this.alertType = 'error'
@@ -400,7 +400,7 @@ export default {
           return
         }
         console.log(data)
-        this.$axios.post(`${config.apiUrl}/robots`, data)
+        this.$axios.post(`${config.apiUrl}/stocks`, data)
           .then(() => {
             this.pageAlert = true
             this.alertType = 'success'
@@ -413,7 +413,7 @@ export default {
           .catch((e) => {
             setTimeout(() => {
               console.log(e.status)
-              this.$axios.post(`${config.apiUrl}/robots`, data)
+              this.$axios.post(`${config.apiUrl}/stocks`, data)
                 .catch((e) => {
                   this.pageAlert = true
                   this.alertType = 'error'

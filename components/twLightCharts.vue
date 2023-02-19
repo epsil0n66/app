@@ -124,7 +124,7 @@ let lineSeries
 let timeScale
 
 export default {
-  name: 'ArobotsFrontendTwLightCharts',
+  name: 'TreasurerFrontendTwLightCharts',
   data () {
     return {
       chartID: 'twChart',
@@ -166,7 +166,7 @@ export default {
     console.log(this.isSafari)
     instance = this.$axios.create()
     delete instance.defaults.headers.Authorization
-    instance('https://arobots.evospb.ru/api/timeframes')
+    instance('https://Treasurer.evospb.ru/api/timeframes')
       .then((res) => {
         this.intervalMenu = res.data
       })

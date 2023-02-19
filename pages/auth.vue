@@ -4,7 +4,7 @@
 
 <script>
 export default {
-  name: 'ArobotsFrontendAuth',
+  name: 'TreasurerFrontendAuth',
   data () {
     return {
       email: null,
@@ -25,7 +25,7 @@ export default {
       })
     } catch (e) {
       console.log(e)
-      this.$router.push('/robots')
+      this.$router.push('/stocks')
     }
   },
 

@@ -221,7 +221,7 @@
                 <v-card-text
                   class="text-h5 px-0 pt-8  black--text"
                 >
-                  Welcome to ARobots
+                  Welcome to Treasurer
                 </v-card-text>
                 <v-form
                   ref="signupForm"
@@ -434,7 +434,7 @@ export default {
           to: '/inspire'
         }
       ],
-      title: 'Arobots',
+      title: 'Treasurer',
       tab: null,
       socialMediaButtons: [
         { text: 'GGL' },
@@ -472,7 +472,7 @@ export default {
   beforeCreate () {
     if (this.$store.getters.getUserRole === 'registered') {
       this.$router.push({
-        path: '/robots'
+        path: '/stocks'
       })
     }
   },

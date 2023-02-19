@@ -4,8 +4,8 @@
       ref="rent"
     />
     <v-data-table
-      :headers="robotsTableHeaders"
-      :items="robotsTableData"
+      :headers="stocksTableHeaders"
+      :items="stocksTableData"
       :items-per-page="10"
       class="elevation-0"
     />
@@ -19,18 +19,18 @@ import RentRobot from './rentRobot.vue'
 import config from '@/config'
 Vue.use(IconCrypto)
 export default {
-  name: 'ArobotsFrontendAddedRobots',
+  name: 'TreasurerFrontendAddedstocks',
   components: { RentRobot },
-  props: ['robotsTableData', 'hideFooter', 'robotsPath'],
+  props: ['stocksTableData', 'hideFooter', 'stocksPath'],
   data () {
     return {
-      robotsTableHeaders: [
+      stocksTableHeaders: [
         { text: 'Аббревиатура', value: 'short' },
         { text: 'Название', value: 'name' },
         { text: 'Цена', value: 'price' },
         { text: 'Тип', value: 'type' }
       ],
-      robotsTable: [
+      stocksTable: [
         {
           currency: 'USDT/BNB',
           exchange: 'Binance',

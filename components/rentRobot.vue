@@ -84,7 +84,7 @@
             Rent
           </h1>
           <p class="text--secondary mb-8">
-            To rent this robot, please register on ARobots
+            To rent this robot, please register on Treasurer
           </p>
           <v-btn
             class="white--text mb-8"
@@ -283,7 +283,7 @@
 <script>
 import config from '@/config'
 export default {
-  name: 'ArobotsFrontendRentRobot',
+  name: 'TreasurerFrontendRentRobot',
   data () {
     return {
       guestRentWarningDialog: null,

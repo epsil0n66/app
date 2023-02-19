@@ -11,7 +11,7 @@
 
 <script>
 export default {
-  name: 'ArobotsFrontendOrdersTable',
+  name: 'TreasurerFrontendOrdersTable',
   props: ['ordersTableData'],
   data () {
     return {

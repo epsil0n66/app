@@ -4,7 +4,7 @@
 
 <script>
 export default {
-  name: 'ArobotsFrontendReferal',
+  name: 'TreasurerFrontendReferal',
 
   data () {
     return {

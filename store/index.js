@@ -63,13 +63,13 @@ export const actions = {
     commit('setUserNickname', email)
     commit('setUserRole', 'registered')
     localStorage.setItem('userRole', 'registered')
-    this.$router.push({ path: '/robots' })
+    this.$router.push({ path: '/stocks' })
   },
   onSignUp ({ commit }, { email }) {
     commit('setUserNickname', email)
     commit('setUserRole', 'registered')
     localStorage.setItem('userRole', 'registered')
-    this.$router.push({ path: '/robots' })
+    this.$router.push({ path: '/stocks' })
   },
   async onPasswordChange ({ commit }, { email, recoveryToken }) {
     await AuthAPI.recovery(email, recoveryToken).then((res) => {
@@ -77,7 +77,7 @@ export const actions = {
       commit('setRefreshToken', res.headers.refresh)
       commit('setUserRole', 'registered')
       localStorage.setItem('userRole', 'registered')
-      this.$router.push({ path: '/robots' })
+      this.$router.push({ path: '/stocks' })
     })
   },
   async onRefresh ({ commit, getters }) {

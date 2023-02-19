@@ -13,7 +13,7 @@
         src="@/assets/icon.png"
         height="36px"
         style="cursor: pointer"
-        @click="$router.push('/robots')"
+        @click="$router.push('/stocks')"
       >
       <v-spacer />
       <button
@@ -68,9 +68,9 @@
                 <v-list-item-title
                   v-show="role === 'registered'"
                   style="cursor:pointer;"
-                  @click="$router.push('/profile/user_robots')"
+                  @click="$router.push('/profile/user_stocks')"
                 >
-                  Added robots
+                  Added stocks
                 </v-list-item-title>
               </v-list-item>
               <v-list-item>
@@ -117,7 +117,7 @@
           <p
             class="text-md-body-2 text-body-2 mb-1 white--text"
           >
-            Arobots
+            Акции
           </p>
         </v-col>
         <v-spacer />
@@ -127,7 +127,7 @@
           <p
             class="text-md-body-2 mb-1  white--text"
           >
-            Trading robots
+            Trading stocks
           </p>
         </v-col>
         <v-col
@@ -211,20 +211,20 @@
 
 <script>
 export default {
-  name: 'ArobotsFrontendMain',
+  name: 'TreasurerFrontendMain',
 
   data () {
     return {
       refresher: null,
       navLinks: {
         registered: [
-          { name: 'Главная', to: '/robots' },
+          { name: 'Главная', to: '/stocks' },
           { name: 'Инвестиции', to: '/profile/dashboard' },
-          { name: 'Калькуляторы', to: '/profile/rented_robots' },
+          { name: 'Калькуляторы', to: '/profile/calculators' },
           { name: 'Новости', to: '/news' }
         ],
         guest: [
-          { name: 'Главная', to: '/robots' },
+          { name: 'Главная', to: '/stocks' },
           { name: 'Калькуляторы', to: '/referal' },
           { name: 'Новости', to: '/news' }
         ]
