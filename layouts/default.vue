@@ -94,12 +94,8 @@
         </v-row>
       </v-col>
     </v-app-bar>
-    <v-main
-      style="background-image: url('/background.png')"
-    >
-      <Nuxt
-        style="background-image: url('/background.png')"
-      />
+    <v-main>
+      <Nuxt />
       <!-- <div class="ellipse1" style="pointer-events: none" />
       <div class="ellipse2" style="pointer-events: none" /> -->
     </v-main>

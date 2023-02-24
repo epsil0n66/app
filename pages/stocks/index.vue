@@ -224,7 +224,7 @@ export default {
     this.RefreshToken = this.$store.getters.getRefreshToken
     this.$axios.get('https://iss.moex.com/iss/engines/stock/markets/shares/securities.json')
       .then((res) => {
-        this.stocksTableData = res.data.securities.data.map((el) => { return { short: el[0], name: el[2], price: el[3], type: el[7] } })
+        this.stocksTableData = res.data.securities.data.map((el) => { return { short: el[0], name: el[2], price: el[3], type: el[7] } }).filter(el => typeof el.price === 'number')
         console.log(this.stocksTableData)
       })
   },
