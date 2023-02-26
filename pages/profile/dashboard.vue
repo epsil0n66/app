@@ -3,10 +3,15 @@
     <v-card
       v-if="userPortfolios.length < 1"
       class="d-flex align-center justify-center flex-column"
-      style="margin-left: 7.5vw; margin-right: 7.5vw; margin-top: 4vh;"
+      style="margin-left: 7.5vw; margin-right: 7.5vw; margin-top: 8vh; padding-bottom: 4vh;"
     >
-      <h1>Вы еще не создали инвестиционный портфель</h1>
+      <h1
+        class="mb-16"
+      >
+        Вы еще не создали инвестиционный портфель
+      </h1>
       <v-btn
+        class="mb-8"
         @click="showCreatePortfolioForm = true"
       >
         Создать
@@ -79,10 +84,16 @@ export default {
 
   methods: {
     createPortfolio () {
-      const totalAmount = this.createPortfolioForm.amount
-      const parts = 2
-      const partAmount = totalAmount / parts
+      const parts = 4
+      let totalAmount
+      if (parts < 20) {
+        totalAmount = this.createPortfolioForm.amount / (0.8 - parts / 100)
+      } else {
+        totalAmount = this.createPortfolioForm.amount / (1 - parts / 100)
+      }
       for (let i = 0; i < parts; i++) {
+        const partAmount = totalAmount / parts
+        totalAmount = totalAmount - partAmount
         let num
         do {
           num = Math.floor(Math.random() * this.portfolios.length)
@@ -93,6 +104,7 @@ export default {
             quantity: Math.floor(partAmount / this.portfolios[num].price),
             totalPrice: Math.floor(partAmount / this.portfolios[num].price) * this.portfolios[num].price
           })
+        console.log(`total: ${totalAmount}, part: ${partAmount}`)
       }
     }
   }
