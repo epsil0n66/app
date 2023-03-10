@@ -222,7 +222,7 @@ export default {
         guest: [
           { name: 'Главная', to: '/stocks' },
           { name: 'Калькуляторы', to: '/referal' },
-          { name: 'Новости', to: '/news' }
+          { name: 'Портфели', to: '/profile/dashboard' }
         ]
       },
       currentURL: null

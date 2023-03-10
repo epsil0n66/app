@@ -16,23 +16,34 @@
       >
         Создать
       </v-btn>
-      <v-card
-        v-if="showCreatePortfolioForm"
+      <v-col
+        cols="12"
       >
-        <h1>
-          Настройки портфеля
-        </h1>
-        <v-text-field
-          v-model=" createPortfolioForm.amount"
-          name="name"
-          label="label"
-        />
-        <v-btn
-          @click="createPortfolio"
+        <v-card
+          v-if="showCreatePortfolioForm"
+          class="d-flex align-center justify-center flex-column"
         >
-          Готово
-        </v-btn>
-      </v-card>
+          <h1>
+            Настройки портфеля
+          </h1>
+          <v-col
+            cols="3"
+          >
+            <v-text-field
+              v-model=" createPortfolioForm.amount"
+              name="name"
+              label="Сумма депозита (в рублях)"
+            />
+          </v-col>
+
+          <v-btn
+            class="ma-4"
+            @click="createPortfolio"
+          >
+            Готово
+          </v-btn>
+        </v-card>
+      </v-col>
     </v-card>
     <v-card
       v-else
@@ -84,7 +95,7 @@ export default {
 
   methods: {
     createPortfolio () {
-      const parts = 4
+      const parts = Math.floor(Math.random() * 10)
       let totalAmount
       if (parts < 20) {
         totalAmount = this.createPortfolioForm.amount / (0.8 - parts / 100)
