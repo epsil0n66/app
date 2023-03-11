@@ -57,7 +57,7 @@
                 label="Первоначальный взнос"
               />
               <v-text-field
-                v-model="mortgageCalc.initialFee"
+                v-model="formattedMortgageInitialFee"
                 hide-details
                 label="Первоначальный взнос"
                 outlined
@@ -112,6 +112,9 @@ export default {
   computed: {
     formattedMortgageTotal () {
       return new Intl.NumberFormat().format(this.mortgageCalc.total)
+    },
+    formattedMortgageInitialFee () {
+      return new Intl.NumberFormat().format(this.mortgageCalc.initialFee)
     }
   },
   watch: {
